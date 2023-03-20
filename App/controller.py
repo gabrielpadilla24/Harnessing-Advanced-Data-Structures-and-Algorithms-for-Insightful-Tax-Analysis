@@ -25,18 +25,27 @@ import model
 import time
 import csv
 import tracemalloc
+import os
 
 """
 El controlador se encarga de mediar entre la vista y el modelo.
 """
 
 
-def new_controller():
+def new_controller(estructura):
     """
     Crea una instancia del modelo
     """
-    #TODO: Llamar la función del modelo que crea las estructuras de datos
-    pass
+    control = {
+        "model": None
+    }
+    if estructura ==1:
+        TipoAbsEstructura = "PROBING"
+    else:
+        TipoAbsEstructura = "CHAINING"
+        
+    control["model"] = model.new_data_structs(TipoAbsEstructura)
+    return control
 
 
 # Funciones para la carga de datos
@@ -45,18 +54,33 @@ def load_data(control, filename):
     """
     Carga los datos del reto
     """
-    # TODO: Realizar la carga de datos
-    pass
+    
+    struct = control["model"]
+    datafile = os.path.join(cf.data_dir, filename)
+    input_file = csv.DictReader(open(datafile, encoding="utf-8"))
+    
+    idx = 0
+    for reg in input_file:
+        reg.update({"id":idx})
+        model.add_data(struct, reg)
+        idx = idx + 1
+    
+    control["model"] = struct    
+    return model.data_size(struct)
+    
 
 
 # Funciones de ordenamiento
 
-def sort(control):
+def sort(control, tipo_algo):
     """
     Ordena los datos del modelo
     """
-    #TODO: Llamar la función del modelo para ordenar los datos
-    pass
+    start_time = get_time()
+    model.sort(control["model"], tipo_algo)
+    end_time = get_time()
+    delta_t = delta_time(start_time, end_time)
+    return delta_t
 
 
 # Funciones de consulta sobre el catálogo
@@ -65,8 +89,35 @@ def get_data(control, id):
     """
     Retorna un dato por su ID.
     """
-    #TODO: Llamar la función del modelo para obtener un dato
-    pass
+    data = model.get_data(control["model"], id)
+    return data
+
+def primeros_x_datos(control, amount):
+    """
+    Retorna los primeros amount datos cargados
+    """
+    i = amount
+    indexes = i - 3
+    data = []
+    while indexes < i:
+        data.append(get_data(control, indexes))
+        indexes = indexes + 1
+        
+    return data
+
+
+def ultimos_x_datos(control, amount, size):
+    """
+    Retorna una lista de los ultimos amount datos cargados
+    """
+    i = size
+    indexes = i - amount
+    data = []
+    while indexes < i:
+        data.append(get_data(control, indexes))
+        indexes = indexes + 1
+        
+    return data
 
 
 def req_1(control):

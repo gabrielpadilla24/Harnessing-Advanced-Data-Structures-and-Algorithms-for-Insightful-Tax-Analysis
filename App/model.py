@@ -38,6 +38,7 @@ from DISClib.Algorithms.Sorting import mergesort as merg
 from DISClib.Algorithms.Sorting import quicksort as quk
 assert cf
 
+
 """
 Se define la estructura de un catálogo de videos. El catálogo tendrá
 dos listas, una para los videos, otra para las categorias de los mismos.
@@ -46,23 +47,45 @@ dos listas, una para los videos, otra para las categorias de los mismos.
 # Construccion de modelos
 
 
-def new_data_structs():
+def new_data_structs(maptype):
     """
     Inicializa las estructuras de datos del modelo. Las crea de
     manera vacía para posteriormente almacenar la información.
     """
-    #TODO: Inicializar las estructuras de datos
-    pass
+    data_structs= {'Años': None,
+                   }
+    
+    data_structs['Años'] = mp.newMap(15,
+                               maptype = maptype,
+                               loadfactor=4,
+                               cmpfunction=cmpMapTaxAnio)
+
+    return data_structs
 
 
 # Funciones para agregar informacion al modelo
 
-def add_data(data_structs, data):
+def newYear(year):
+    entry = {'year': "", "tax": None}
+    entry['year'] = year
+    entry['tax'] = lt.newList('SINGLE_LINKED', cmpYears)
+    return entry
+
+def add_data(data_structs, reg):
     """
     Función para agregar nuevos elementos a la lista
     """
     #TODO: Crear la función para agregar elementos a una lista
-    pass
+    years = data_structs['Años']
+    existyear = mp.contains(years, reg['Año'])
+    if existyear:
+        entry = mp.get(years, reg['Año'])
+        year = me.getValue(entry)
+    else:
+        year = newYear(reg['Año'])
+        mp.put(years, reg['Año'], year)
+    lt.addLast(year['tax'], reg)
+    tottaxes = lt.size(year['tax'])
 
 
 # Funciones para creacion de datos
@@ -90,7 +113,7 @@ def data_size(data_structs):
     Retorna el tamaño de la lista de datos
     """
     #TODO: Crear la función para obtener el tamaño de una lista
-    pass
+    return mp.size(data_structs['Años'])
 
 
 def req_1(data_structs):
@@ -182,10 +205,41 @@ def sort_criteria(data_1, data_2):
     #TODO: Crear función comparadora para ordenar
     pass
 
+def cmpYears(year1, year2):
+    if (int(year1) == int(year2)):
+        return 0
+    elif (int(year1) > int(year2)):
+        return 1
+    else:
+        return -1
+    
 
-def sort(data_structs):
+def cmpMapTaxAnio(entry_1, entry_2):
+    
+    yearentry = me.getKey(entry_2)
+    if entry_1 < yearentry:
+        return 1
+    elif entry_1 == yearentry:
+        return 0
+    else:
+        return -1
+
+
+def sort(data_structs, tipo_algo):
     """
     Función encargada de ordenar la lista con los datos
     """
-    #TODO: Crear función de ordenamiento
-    pass
+    if tipo_algo == 1:
+        return se.sort(data_structs["data"], sort_criteria)
+    
+    if tipo_algo == 2:
+        return ins.sort(data_structs["data"], sort_criteria)
+    
+    if tipo_algo == 3:
+        return sa.sort(data_structs["data"], sort_criteria)
+    
+    if tipo_algo ==4:
+        return quk.sort(data_structs["data"], sort_criteria)
+    
+    if tipo_algo ==5:
+        return merg.sort(data_structs["data"], sort_criteria)

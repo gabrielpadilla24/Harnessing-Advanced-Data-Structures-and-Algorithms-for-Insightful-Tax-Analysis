@@ -31,6 +31,8 @@ from DISClib.DataStructures import mapentry as me
 assert cf
 from tabulate import tabulate
 import traceback
+default_limit = 1000 
+sys.setrecursionlimit(default_limit*10)
 
 """
 La vista se encarga de la interacción con el usuario
@@ -40,13 +42,12 @@ operación solicitada
 """
 
 
-def new_controller():
+def new_controller(estructura):
     """
         Se crea una instancia del controlador
     """
-    #TODO: Llamar la función del controlador donde se crean las estructuras de datos
-    pass
-
+    control = controller.new_controller(estructura)
+    return control
 
 def print_menu():
     print("Bienvenido")
@@ -62,20 +63,37 @@ def print_menu():
     print("0- Salir")
 
 
-def load_data(control):
+def load_data(control, porcentaje):
     """
     Carga los datos
     """
-    #TODO: Realizar la carga de datos
-    pass
+    nombre_archivo = ""
+    if porcentaje==1:
+       nombre_archivo = "Salida_agregados_renta_juridicos_AG-5pct.csv"
+    elif porcentaje==2:  
+        nombre_archivo = "Salida_agregados_renta_juridicos_AG-10pct.csv"
+    elif porcentaje==3:  
+        nombre_archivo = "Salida_agregados_renta_juridicos_AG-20pct.csv" 
+    elif porcentaje==4:  
+        nombre_archivo = "Salida_agregados_renta_juridicos_AG-30pct.csv"
+    elif porcentaje==5:  
+        nombre_archivo = "Salida_agregados_renta_juridicos_AG-50pct.csv"  
+    elif porcentaje==6:  
+        nombre_archivo = "Salida_agregados_renta_juridicos_AG-80pct.csv" 
+    elif porcentaje==7:  
+        nombre_archivo = "Salida_agregados_renta_juridicos_AG-large.csv"
+    elif porcentaje==8:  
+        nombre_archivo = "Salida_agregados_renta_juridicos_AG-small.csv"
 
+    data = controller.load_data(control, nombre_archivo)
+    return data
 
 def print_data(control, id):
     """
         Función que imprime un dato dado su ID
     """
-    #TODO: Realizar la función para imprimir un elemento
-    pass
+    data = controller.get_data(control, id)
+    print("El dato con el ID", id, "es:", data)
 
 def print_req_1(control):
     """
@@ -142,8 +160,7 @@ def print_req_8(control):
 
 
 # Se crea el controlador asociado a la vista
-control = new_controller()
-
+control = new_controller(estructura=1)
 # main del reto
 if __name__ == "__main__":
     """
@@ -156,8 +173,44 @@ if __name__ == "__main__":
         inputs = input('Seleccione una opción para continuar\n')
         try:
             if int(inputs) == 1:
+                print("Ponga 1 si quiere cargar los archivos en una ARRAY_LIST")
+                print("Ponga 2 si quiere cargar los archivos en una LINKED_LIST")
+                estructura = int(input())
+                print("Elija 1 si quiere cargar el archivo de tamaño 5%")
+                print("Elija 2 si quiere cargar el archivo de tamaño 10%")
+                print("Elija 3 si quiere cargar el archivo de tamaño 20%")
+                print("Elija 4 si quiere cargar el archivo de tamaño 30%")
+                print("Elija 5 si quiere cargar el archivo de tamaño 50%")
+                print("Elija 6 si quiere cargar el archivo de tamaño 80%")
+                print("Elija 7 si quiere cargar el archivo de tamaño -large")
+                print("Elija 8 si quiere cargar el archivo de tamaño -small")
+                porcentaje = int(input())
+                control = new_controller(estructura)
+                
+                
                 print("Cargando información de los archivos ....\n")
-                data = load_data(control)
+                data = load_data(control, porcentaje)
+                print("Total de lineas de datos cargadas: " + str(data) + ".")
+                
+                x = 3
+                width = [20]
+                width = width*data    
+                
+                print("Los primeros ", x, "datos cargados son: ")
+                print(tabulate(controller.primeros_x_datos(control, x), headers="keys",tablefmt="simple_grid", maxheadercolwidths=width, maxcolwidths=width))
+                print()
+                
+                print("Los últimos ", x, "datos cargados son: ")
+                print(tabulate(controller.ultimos_x_datos(control, x, data), headers="keys",tablefmt="simple_grid", maxheadercolwidths=width, maxcolwidths=width))
+                print()
+                
+                print("Presione 1 si desea que se ordenen los datos mediante Selection sort")
+                print("Presione 2 si desea que se ordenen los datos mediante Insertion sort")
+                print("Presione 3 si desea que se ordenen los datos mediante Shell sort")
+                print("Presione 4 si desea que se ordenen los datos mediante Quick sort")
+                print("Presione 5 si desea que se ordenen los datos mediante Merge sort")
+                tipo_algo=int(input())
+                
             elif int(inputs) == 2:
                 print_req_1(control)
 

@@ -32,9 +32,9 @@ Este repositorio forma parte del marco docente de estructura de datos y algoritm
 
 Los estudiantes editan esta sección para agregar sus nombres, correos electrónicos de Uniandes y especificar qué funcionalidad de proyecto implementarán.
 
-1. Nombre del estudiante No. 1, Correo electrónico del estudiante No. 1 Uniandes, Funcionalidad propiedad del estudiante No. 1.
-1. Nombre del estudiante No. 2, Correo electrónico del estudiante No. 2 Uniandes, Funcionalidad propiedad del estudiante No. 2.
-1. Nombre del estudiante No. 3, Correo electrónico del estudiante No. 3 Uniandes, Funcionalidad propiedad del estudiante No. 3.
+1. **Reqs No. 2, No. 4 & No. 8**, Gabriel Padilla, <g.padilla@uniandes.edu.co>, 20224552
+1. **Reqs No. 1, No. 3 & No. 6**, Simon Saavedra, <s.saavedrap@uniandes.edu.co>, 202217058
+1. **Reqs No. 5, No. 7**, Emilio Zea, <e.zea@uniandes.edu.co>, 202221744
 
 [Volver al inicio](#plantilla-del-reto)
 
