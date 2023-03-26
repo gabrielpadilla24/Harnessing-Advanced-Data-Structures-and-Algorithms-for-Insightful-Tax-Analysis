@@ -197,12 +197,11 @@ if __name__ == "__main__":
                 width = width*data    
                 
                 print("Los primeros ", x, "datos cargados son: ")
-                print(tabulate(controller.primeros_x_datos(control, x), headers="keys",tablefmt="simple_grid", maxheadercolwidths=width, maxcolwidths=width))
                 print()
                 
                 print("Los últimos ", x, "datos cargados son: ")
-                print(tabulate(controller.ultimos_x_datos(control, x, data), headers="keys",tablefmt="simple_grid", maxheadercolwidths=width, maxcolwidths=width))
-                print()
+            
+                print(control)
                 
                 print("Presione 1 si desea que se ordenen los datos mediante Selection sort")
                 print("Presione 2 si desea que se ordenen los datos mediante Insertion sort")
