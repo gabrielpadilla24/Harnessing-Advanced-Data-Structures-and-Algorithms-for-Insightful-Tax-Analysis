@@ -89,23 +89,16 @@ def newYear(year):
     entry['tax'] = lt.newList('SINGLE_LINKED', cmpYears)
     return entry
 
-def add_data(maptype,nombre_archivo):
+def add_data(mapa_vacio,info):
     """
     Función para agregar nuevos elementos a la lista
     """
     #TODO: Crear la función para agregar elementos a una lista
     
-    mapa=new_data_structs(maptype)
-    names=os.path.join(cf.data_dir, nombre_archivo)
-    archivo = open(names, "r", encoding="utf-8")
-    registro = csv.DictReader(nombre_archivo, delimiter=",")
-    
-    for anios in registro:
-            Dian_mp = put_Dian(mapa, anios)
-            
-    archivo.close()
+    mp.put(mapa_vacio,info['Año'],info)
+    return mapa_vacio
 
-    return Dian_mp
+    
 
 
 # Funciones para creacion de datos

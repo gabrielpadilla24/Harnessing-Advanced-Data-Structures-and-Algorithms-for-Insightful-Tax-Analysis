@@ -54,9 +54,15 @@ def load_data(maptype, nombre_archivo):
     """
     Carga los datos del reto
     """
+    mapa = model.new_data_structs(maptype)
+    name = cf.data_dir + nombre_archivo
+    archivo = csv.DictReader(open(name, encoding='utf-8'))
+
+    for anios in archivo:
+        x =  model.add_data(mapa, anios)
+
+    return x
     
-    datos=model.add_data(maptype, nombre_archivo)
-    return datos
     
 
 
