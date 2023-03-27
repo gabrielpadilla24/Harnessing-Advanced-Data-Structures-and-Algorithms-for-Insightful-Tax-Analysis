@@ -150,10 +150,12 @@ def req_2(data, anio, cod):
     """
     # TODO: Realizar el requerimiento 2
     x = mp.size(data)
-    y = mp.get(data, '2012')
+    y = mp.get(data, str(anio))
+    z = mp.keySet(data)
+    r = mp.valueSet(data)
     
     #return x, anio, cod
-    return x
+    return y
 
 
 def req_3(data_structs):
