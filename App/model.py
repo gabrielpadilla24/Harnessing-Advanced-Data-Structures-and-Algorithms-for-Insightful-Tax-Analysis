@@ -24,7 +24,7 @@
  * Dario Correal - Version inicial
  """
 
-
+import csv
 import config as cf
 from DISClib.ADT import list as lt
 from DISClib.ADT import stack as st
@@ -45,22 +45,39 @@ dos listas, una para los videos, otra para las categorias de los mismos.
 """
 
 # Construccion de modelos
-
+def comp_anio(dato_1,dato_2):
+    anio1=me.getKey(dato_1)
+    anio2=me.getKey(dato_2)
+    
+    if int(anio1)>int(anio2):
+        return 1
+    elif int(anio1)<int(anio2):
+        return -1
+    else:
+        return 0
 
 def new_data_structs(maptype):
     """
     Inicializa las estructuras de datos del modelo. Las crea de
     manera vacía para posteriormente almacenar la información.
     """
-    data_structs= {'Años': None,
-                   }
     
-    data_structs['Años'] = mp.newMap(15,
-                               maptype = maptype,
-                               loadfactor=4,
-                               cmpfunction=cmpMapTaxAnio)
+    if maptype == 1:
+        # config ADT Map as CHAINING
+        dian_mp = mp.newMap(1000,
+                               maptype="CHAINING",
+                               loadfactor=4.0,
+                               cmpfunction=comp_anio)
+        return dian_mp
+    if maptype == 2:
+        # config ADT Map as PROBING
+        dian_mp = mp.newMap(1000,
+                               maptype="PROBING",
+                               loadfactor=0.5,
+                               cmpfunction=comp_anio)
+        return dian_mp
 
-    return data_structs
+   
 
 
 # Funciones para agregar informacion al modelo
@@ -71,24 +88,33 @@ def newYear(year):
     entry['tax'] = lt.newList('SINGLE_LINKED', cmpYears)
     return entry
 
-def add_data(data_structs, reg):
+def add_data(maptype,nombre_archivo):
     """
     Función para agregar nuevos elementos a la lista
     """
     #TODO: Crear la función para agregar elementos a una lista
-    years = data_structs['Años']
-    existyear = mp.contains(years, reg['Año'])
-    if existyear:
-        entry = mp.get(years, reg['Año'])
-        year = me.getValue(entry)
-    else:
-        year = newYear(reg['Año'])
-        mp.put(years, reg['Año'], year)
-    lt.addLast(year['tax'], reg)
-    tottaxes = lt.size(year['tax'])
+    
+    mapa=new_data_structs(maptype)
+    archivo = open(nombre_archivo, "r", encoding="utf-8")
+        # leyendo el archivo CSV
+    registro = csv.DictReader(nombre_archivo, delimiter=",")
+        # iterando sobre los registros del archivo CSV
+    for anios in registro:
+            # convirtiendo el numero de pokedex a entero
+            archivo.update({"Año": int(archivo["Año"])})
+            # agregando el registro al ADT Map
+            Dian_mp = put_Dian(mapa, anios)
+    # cerrando el archivo CSV
+    archivo.close()
+    # retornando la índice de pokemon
+    return Dian_mp
 
 
 # Funciones para creacion de datos
+
+def put_Dian(mapa_vacio,info):
+    mp.put(mapa_vacio,info['Año'],info)
+    return mapa_vacio
 
 def new_data(id, info):
     """

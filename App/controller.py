@@ -50,23 +50,13 @@ def new_controller(estructura):
 
 # Funciones para la carga de datos
 
-def load_data(control, filename):
+def load_data(maptype, nombre_archivo):
     """
     Carga los datos del reto
     """
     
-    struct = control["model"]
-    datafile = os.path.join(cf.data_dir, filename)
-    input_file = csv.DictReader(open(datafile, encoding="utf-8"))
-    
-    idx = 0
-    for reg in input_file:
-        reg.update({"id":idx})
-        model.add_data(struct, reg)
-        idx = idx + 1
-    
-    control["model"] = struct    
-    return model.data_size(struct)
+    datos=model.add_data(maptype, nombre_archivo)
+    return datos
     
 
 

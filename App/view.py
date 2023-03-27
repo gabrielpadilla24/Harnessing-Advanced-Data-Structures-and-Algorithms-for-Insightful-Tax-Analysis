@@ -63,7 +63,7 @@ def print_menu():
     print("0- Salir")
 
 
-def load_data(control, porcentaje):
+def load_data(maptype, porcentaje):
     """
     Carga los datos
     """
@@ -85,7 +85,8 @@ def load_data(control, porcentaje):
     elif porcentaje==8:  
         nombre_archivo = "Salida_agregados_renta_juridicos_AG-small.csv"
 
-    data = controller.load_data(control, nombre_archivo)
+    data = controller.load_data(maptype,nombre_archivo)
+   
     return data
 
 def print_data(control, id):
@@ -173,9 +174,9 @@ if __name__ == "__main__":
         inputs = input('Seleccione una opción para continuar\n')
         try:
             if int(inputs) == 1:
-                print("Ponga 1 si quiere cargar los archivos en una ARRAY_LIST")
-                print("Ponga 2 si quiere cargar los archivos en una LINKED_LIST")
-                estructura = int(input())
+                print("Ponga 1 si quiere de Maptype CHAINING")
+                print("Ponga 2 si quiere de Maptype PROBING")
+                maptype = int(input())
                 print("Elija 1 si quiere cargar el archivo de tamaño 5%")
                 print("Elija 2 si quiere cargar el archivo de tamaño 10%")
                 print("Elija 3 si quiere cargar el archivo de tamaño 20%")
@@ -185,11 +186,10 @@ if __name__ == "__main__":
                 print("Elija 7 si quiere cargar el archivo de tamaño -large")
                 print("Elija 8 si quiere cargar el archivo de tamaño -small")
                 porcentaje = int(input())
-                control = new_controller(estructura)
                 
                 
                 print("Cargando información de los archivos ....\n")
-                data = load_data(control, porcentaje)
+                data=load_data(maptype,porcentaje)
                 print("Total de lineas de datos cargadas: " + str(data) + ".")
                 
                 x = 3
