@@ -41,7 +41,7 @@ se hace la solicitud al controlador para ejecutar la
 operación solicitada
 """
 
-
+data=''
 def new_controller(estructura):
     """
         Se crea una instancia del controlador
@@ -96,7 +96,8 @@ def load_data(maptype, porcentaje,sorting_method):
         primero_y_ultimo=controller.primeros_y_ultimos_Dat(lista_ordenada)
         numero_data=numero_data+lt.size(lista_ordenada)
         print(str(primero_y_ultimo))
-    
+        
+    return data
         
     
 
@@ -215,7 +216,7 @@ if __name__ == "__main__":
                 #width = width*data    
                 
                 print("Los primeros ", x, "datos cargados son: ")
-                print(data)
+                print()
                 
                 print("Los últimos ", x, "datos cargados son: ")
             
