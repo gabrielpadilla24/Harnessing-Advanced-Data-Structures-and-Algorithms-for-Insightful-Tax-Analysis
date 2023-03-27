@@ -104,12 +104,13 @@ def print_req_1(data):
     pass
 
 
-def print_req_2(data):
+def print_req_2(data, anio, cod):
     """
         Función que imprime la solución del Requerimiento 2 en consola
     """
     # TODO: Imprimir el resultado del requerimiento 2
-    print(controller.req_2(data))
+    
+    print(controller.req_2(data, anio, cod))
 
 
 def print_req_3(control):
@@ -216,7 +217,11 @@ if __name__ == "__main__":
                 
 
             elif int(inputs) == 3:
-                print_req_2(data)
+                print('Escriba el año que desea consultar RAA')
+                anio = input()
+                print('Escriba el codigo que desea consultar')
+                cod = input() 
+                print_req_2(data, anio, cod)
 
             elif int(inputs) == 4:
                 print_req_3(control)
