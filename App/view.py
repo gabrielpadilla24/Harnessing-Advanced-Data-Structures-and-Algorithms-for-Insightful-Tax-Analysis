@@ -162,6 +162,7 @@ def print_req_8(control):
 
 # Se crea el controlador asociado a la vista
 control = new_controller(estructura=1)
+data=""
 # main del reto
 if __name__ == "__main__":
     """
@@ -211,7 +212,8 @@ if __name__ == "__main__":
                 tipo_algo=int(input())
                 
             elif int(inputs) == 2:
-                print_req_1(control)
+                print_req_1(data)
+                print(data)
 
             elif int(inputs) == 3:
                 print_req_2(control)
