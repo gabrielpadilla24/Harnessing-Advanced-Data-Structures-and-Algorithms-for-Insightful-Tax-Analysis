@@ -170,13 +170,14 @@ def req_2(data, anio, cod):
     Función que soluciona el requerimiento 2
     """
     # TODO: Realizar el requerimiento 2
+    f = data
     x = mp.size(data)
     y = mp.get(data, str(anio))
     z = mp.keySet(data)
     r = mp.valueSet(data)
     
     #return x, anio, cod
-    return y
+    return data
 
 
 def req_3(data_structs):
