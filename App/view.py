@@ -63,7 +63,7 @@ def print_menu():
     print("0- Salir")
 
 
-def load_data(maptype, porcentaje):
+def load_data(maptype, porcentaje,sorting_method):
     """
     Carga los datos
     """
@@ -86,8 +86,19 @@ def load_data(maptype, porcentaje):
         nombre_archivo = "Salida_agregados_renta_juridicos_AG-small.csv"
 
     data = controller.load_data(maptype,nombre_archivo)
-   
-    return data
+    numero_data=0
+    for anio in range(2012,2022):
+        anio=str(anio)
+        dato=controller.get_data(data,anio)
+        dato_anio=me.getValue(dato)
+        lista_anio=dato_anio['Datos']
+        lista_ordenada=controller.sort(lista_anio,sorting_method)
+        primero_y_ultimo=controller.primeros_y_ultimos_Dat(lista_ordenada)
+        numero_data=numero_data+lt.size(lista_ordenada)
+        print(str(primero_y_ultimo))
+    
+        
+    
 
 def print_data(control, id):
     """
@@ -187,10 +198,15 @@ if __name__ == "__main__":
                 print("Elija 7 si quiere cargar el archivo de tamaño -large")
                 print("Elija 8 si quiere cargar el archivo de tamaño -small")
                 porcentaje = int(input())
-                
+                print("Presione 1 si desea que se ordenen los datos mediante Selection sort")
+                print("Presione 2 si desea que se ordenen los datos mediante Insertion sort")
+                print("Presione 3 si desea que se ordenen los datos mediante Shell sort")
+                print("Presione 4 si desea que se ordenen los datos mediante Quick sort")
+                print("Presione 5 si desea que se ordenen los datos mediante Merge sort")
+                tipo_algo=int(input())
                 
                 print("Cargando información de los archivos ....\n")
-                data=load_data(maptype,porcentaje)
+                data=load_data(maptype,porcentaje,tipo_algo)
                 print("Total de lineas de datos cargadas:  ")
                 
                 x = 3
@@ -204,12 +220,7 @@ if __name__ == "__main__":
             
                 print("hola")
                 
-                print("Presione 1 si desea que se ordenen los datos mediante Selection sort")
-                print("Presione 2 si desea que se ordenen los datos mediante Insertion sort")
-                print("Presione 3 si desea que se ordenen los datos mediante Shell sort")
-                print("Presione 4 si desea que se ordenen los datos mediante Quick sort")
-                print("Presione 5 si desea que se ordenen los datos mediante Merge sort")
-                tipo_algo=int(input())
+               
                 
             elif int(inputs) == 2:
                 print_req_1(data)
