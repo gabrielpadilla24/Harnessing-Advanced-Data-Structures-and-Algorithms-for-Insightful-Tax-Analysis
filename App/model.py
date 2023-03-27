@@ -36,6 +36,7 @@ from DISClib.Algorithms.Sorting import insertionsort as ins
 from DISClib.Algorithms.Sorting import selectionsort as se
 from DISClib.Algorithms.Sorting import mergesort as merg
 from DISClib.Algorithms.Sorting import quicksort as quk
+import os
 assert cf
 
 
@@ -95,13 +96,13 @@ def add_data(maptype,nombre_archivo):
     #TODO: Crear la función para agregar elementos a una lista
     
     mapa=new_data_structs(maptype)
-    archivo = open(nombre_archivo, "r", encoding="utf-8")
+    names=os.path.join(cf.data_dir, nombre_archivo)
+    archivo = open(names, "r", encoding="utf-8")
         # leyendo el archivo CSV
     registro = csv.DictReader(nombre_archivo, delimiter=",")
         # iterando sobre los registros del archivo CSV
     for anios in registro:
-            # convirtiendo el numero de pokedex a entero
-            archivo.update({"Año": int(archivo["Año"])})
+    
             # agregando el registro al ADT Map
             Dian_mp = put_Dian(mapa, anios)
     # cerrando el archivo CSV
@@ -113,7 +114,7 @@ def add_data(maptype,nombre_archivo):
 # Funciones para creacion de datos
 
 def put_Dian(mapa_vacio,info):
-    mp.put(mapa_vacio,info['Año'],info)
+    mp.put(mapa_vacio,info["Año"],info)
     return mapa_vacio
 
 def new_data(id, info):
