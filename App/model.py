@@ -47,14 +47,14 @@ dos listas, una para los videos, otra para las categorias de los mismos.
 
 # Construccion de modelos
 def comp_anio(dato_1,dato_2):
-    anio1=me.getKey(dato_1)
+    anio1=dato_1
     anio2=me.getKey(dato_2)
     
     if int(anio1)>int(anio2):
         return 1
     elif int(anio1)<int(anio2):
         return -1
-    else:
+    elif int(anio1)==int(anio2):
         return 0
 
 def new_data_structs(maptype):
@@ -98,23 +98,20 @@ def add_data(maptype,nombre_archivo):
     mapa=new_data_structs(maptype)
     names=os.path.join(cf.data_dir, nombre_archivo)
     archivo = open(names, "r", encoding="utf-8")
-        # leyendo el archivo CSV
     registro = csv.DictReader(nombre_archivo, delimiter=",")
-        # iterando sobre los registros del archivo CSV
-    for anios in registro:
     
-            # agregando el registro al ADT Map
+    for anios in registro:
             Dian_mp = put_Dian(mapa, anios)
-    # cerrando el archivo CSV
+            
     archivo.close()
-    # retornando la índice de pokemon
+
     return Dian_mp
 
 
 # Funciones para creacion de datos
 
 def put_Dian(mapa_vacio,info):
-    mp.put(mapa_vacio,info["Año"],info)
+    mp.put(mapa_vacio,info['Año'],info)
     return mapa_vacio
 
 def new_data(id, info):

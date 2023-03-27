@@ -190,18 +190,18 @@ if __name__ == "__main__":
                 
                 print("Cargando información de los archivos ....\n")
                 data=load_data(maptype,porcentaje)
-                print("Total de lineas de datos cargadas: " + str(data) + ".")
+                print("Total de lineas de datos cargadas:  ")
                 
                 x = 3
                 width = [20]
-                width = width*data    
+                #width = width*data    
                 
                 print("Los primeros ", x, "datos cargados son: ")
-                print()
+                print(data)
                 
                 print("Los últimos ", x, "datos cargados son: ")
             
-                print(control)
+                print("hola")
                 
                 print("Presione 1 si desea que se ordenen los datos mediante Selection sort")
                 print("Presione 2 si desea que se ordenen los datos mediante Insertion sort")
