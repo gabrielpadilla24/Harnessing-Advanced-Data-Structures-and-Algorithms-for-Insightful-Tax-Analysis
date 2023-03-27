@@ -116,7 +116,7 @@ def ultimos_x_datos(control, amount, size):
     return data
 
 
-def req_1(control):
+def req_1(data):
     """
     Retorna el resultado del requerimiento 1
     """
@@ -124,12 +124,12 @@ def req_1(control):
     pass
 
 
-def req_2(control):
+def req_2(data):
     """
     Retorna el resultado del requerimiento 2
     """
     # TODO: Modificar el requerimiento 2
-    pass
+    return model.req_2(data)
 
 
 def req_3(control):
