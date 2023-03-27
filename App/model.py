@@ -57,6 +57,19 @@ def comp_anio(dato_1,dato_2):
     elif int(anio1)==int(anio2):
         return 0
 
+def primeros_y_ultimos_Dat(list):
+    lista=lt.newList()
+    primeros=lt.subList(list,1,3)
+    ultimo=lt.subList(list,lt.size(list)-2,3)
+    primeros_iterando=lt.iterator(primeros)
+    ultimos_iterando=lt.iterator(ultimo)
+    
+    for i in primeros_iterando:
+        lt.addLast(lista,i)
+    for i in ultimos_iterando:
+        lt.addFirst(lista,i)
+    return lista
+
 def new_data_structs(maptype):
     """
     Inicializa las estructuras de datos del modelo. Las crea de
@@ -84,19 +97,26 @@ def new_data_structs(maptype):
 # Funciones para agregar informacion al modelo
 
 def newYear(year):
-    entry = {'year': "", "tax": None}
-    entry['year'] = year
-    entry['tax'] = lt.newList('SINGLE_LINKED', cmpYears)
+    entry = {'Year': "", "Datos": None}
+    entry['Year'] = year
+    entry['Datos'] = lt.newList('SINGLE_LINKED')
     return entry
 
-def add_data(mapa_vacio,info):
+def add_data(mapa,anio,info):
     """
     Función para agregar nuevos elementos a la lista
     """
     #TODO: Crear la función para agregar elementos a una lista
+    authors = mapa
+    existauthor = mp.contains(authors, anio)
+    if existauthor:
+        entry = mp.get(authors, anio)
+        author = me.getValue(entry)
+    else:
+        author = newYear(anio)
+        mp.put(authors, anio, author)
+    lt.addLast(author['Datos'], info)
     
-    mp.put(mapa_vacio,info['Año'],info)
-    return mapa_vacio
 
     
 
@@ -122,7 +142,8 @@ def get_data(data_structs, id):
     Retorna un dato a partir de su ID
     """
     #TODO: Crear la función para obtener un dato de una lista
-    pass
+    x=mp.get(data_structs,id)
+    return x
 
 
 def data_size(data_structs):
@@ -242,13 +263,11 @@ def cmpYears(year1, year2):
 
 def cmpMapTaxAnio(entry_1, entry_2):
     
-    yearentry = me.getKey(entry_2)
-    if entry_1 < yearentry:
-        return 1
-    elif entry_1 == yearentry:
-        return 0
+    
+    if entry_1['Código actividad económica']< entry_2['Código actividad económica']:
+        return True
     else:
-        return -1
+        return False
 
 
 def sort(data_structs, tipo_algo):
@@ -256,16 +275,16 @@ def sort(data_structs, tipo_algo):
     Función encargada de ordenar la lista con los datos
     """
     if tipo_algo == 1:
-        return se.sort(data_structs["data"], sort_criteria)
+        return se.sort(data_structs, cmpMapTaxAnio)
     
     if tipo_algo == 2:
-        return ins.sort(data_structs["data"], sort_criteria)
+        return ins.sort(data_structs, cmpMapTaxAnio)
     
     if tipo_algo == 3:
-        return sa.sort(data_structs["data"], sort_criteria)
+        return sa.sort(data_structs, cmpMapTaxAnio)
     
     if tipo_algo ==4:
-        return quk.sort(data_structs["data"], sort_criteria)
+        return quk.sort(data_structs, cmpMapTaxAnio)
     
     if tipo_algo ==5:
-        return merg.sort(data_structs["data"], sort_criteria)
+        return merg.sort(data_structs, cmpMapTaxAnio)

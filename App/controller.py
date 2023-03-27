@@ -59,9 +59,10 @@ def load_data(maptype, nombre_archivo):
     archivo = csv.DictReader(open(name, encoding='utf-8'))
 
     for anios in archivo:
-        x =  model.add_data(mapa, anios)
-
-    return x
+        model.add_data(mapa,anios['Año'], anios)
+        
+    return mapa
+    
     
     
 
@@ -72,11 +73,10 @@ def sort(control, tipo_algo):
     """
     Ordena los datos del modelo
     """
-    start_time = get_time()
-    model.sort(control["model"], tipo_algo)
-    end_time = get_time()
-    delta_t = delta_time(start_time, end_time)
-    return delta_t
+    
+    x=model.sort(control, tipo_algo)
+
+    return x
 
 
 # Funciones de consulta sobre el catálogo
@@ -85,21 +85,12 @@ def get_data(control, id):
     """
     Retorna un dato por su ID.
     """
-    data = model.get_data(control["model"], id)
+    data = model.get_data(control, id)
     return data
 
-def primeros_x_datos(control, amount):
-    """
-    Retorna los primeros amount datos cargados
-    """
-    i = amount
-    indexes = i - 3
-    data = []
-    while indexes < i:
-        data.append(get_data(control, indexes))
-        indexes = indexes + 1
-        
-    return data
+def primeros_y_ultimos_Dat(list):
+    x=model.primeros_y_ultimos_Dat(list)
+    return x
 
 
 def ultimos_x_datos(control, amount, size):
