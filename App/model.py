@@ -233,17 +233,102 @@ def req_4(data, anio):
     datos_iterables = lt.iterator(me.getValue(datoanio)["Datos"])'''
     datoanio = get_data(data, anio)
     
-    valores = lt.newList()
+    subsectores = {}
     
     datositerables = lt.iterator(me.getValue(datoanio)["Datos"])
     
     for taxroll in datositerables:
-        lt.addLast(valores, taxroll)
+        subsector = taxroll["Código subsector económico"]
+        if subsector in subsectores:
+            subsectores[subsector] += int(taxroll["Costos y gastos nómina"])
+        else:
+            subsectores[subsector] = int(taxroll["Costos y gastos nómina"])
     
-    valores = se.sort(valores, cmpMapCostosGN)
-    maxcostosgn = lt.firstElement(valores)
+    sorted_subsectores = sorted(subsectores.items(), key=lambda x: x[1], reverse=True)
+    max_subsector = sorted_subsectores[0][0]
     
-    return maxcostosgn["Nombre subsector económico"]
+    info_subsector = obtener_informacion_subsector(data, anio, max_subsector)
+    
+    return {
+        'Código Subsector Económico': max_subsector,
+        'Código sector económico': info_subsector['Código sector económico'],
+        'Nombre sector económico': info_subsector['Nombre sector económico'],
+        'Nombre subsector económico': info_subsector['Nombre subsector económico']
+    }
+
+    
+
+
+def obtener_informacion_subsector(data, anio, cod_subsector):
+    """
+    Función que devuelve la información del subsector económico dado en el año dado.
+    """
+    datoanio = get_data(data, anio)
+    datositerables = lt.iterator(me.getValue(datoanio)["Datos"])
+    
+    codigo_sector = None
+    nombre_sector = None
+    nombre_subsector = None
+    total_costos_nomina = 0
+    total_ingresos_netos = 0
+    total_costos_gastos = 0
+    total_saldo_por_pagar = 0
+    total_saldo_favor = 0
+    
+    for taxroll in datositerables:
+        if taxroll["Código subsector económico"] == cod_subsector:
+            if not codigo_sector:
+                codigo_sector = taxroll["Código sector económico"]
+                nombre_sector = taxroll["Nombre sector económico"]
+                nombre_subsector = taxroll["Nombre subsector económico"]
+            
+    
+    return {
+        'Código sector económico': codigo_sector,
+        'Nombre sector económico': nombre_sector,
+        'Código subsector económico': cod_subsector,
+        'Nombre subsector económico': nombre_subsector,
+        
+    }
+
+
+
+
+
+''''
+def req_4(data, anio):
+    """
+    Función que devuelve el subsector económico con mayores costos y gastos de nómina para un año dado
+    """
+    datoanio = get_data(data, anio)
+    
+    subsectores = {}
+    
+    datositerables = lt.iterator(me.getValue(datoanio)["Datos"])
+    
+    for taxroll in datositerables:
+        subsector = taxroll["Código subsector económico"]
+        if subsector in subsectores:
+            subsectores[subsector] += int(taxroll["Total costos y gastos de nómina"])
+        else:
+            subsectores[subsector] = int(taxroll["Total costos y gastos de nómina"])
+    
+    sorted_subsectores = sorted(subsectores.items(), key=lambda x: x[1], reverse=True)
+    max_subsector = sorted_subsectores[0][0]
+    
+    # obtener información del subsector con mayores costos y gastos de nómina
+    info_subsector = obtener_informacion_subsector(data, anio, max_subsector)
+    
+    return {
+        'codigo_subsector_economico': max_subsector,
+        'codigo_sector_economico': info_subsector['codigo_sector_economico'],
+        'nombre_sector_economico': info_subsector['nombre_sector_economico'],
+        'nombre_subsector_economico': info_subsector['nombre_subsector_economico']
+    }
+'''
+
+
+    
 
 
 
