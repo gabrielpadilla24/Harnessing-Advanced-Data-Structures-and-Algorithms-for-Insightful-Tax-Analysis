@@ -203,7 +203,7 @@ if __name__ == "__main__":
                 
                 print("Los últimos ", x, "datos cargados son: ")
             
-                print("hola")
+                
                 
                 print("Presione 1 si desea que se ordenen los datos mediante Selection sort")
                 print("Presione 2 si desea que se ordenen los datos mediante Insertion sort")
