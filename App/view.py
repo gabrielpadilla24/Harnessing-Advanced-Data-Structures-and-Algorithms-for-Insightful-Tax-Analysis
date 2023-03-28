@@ -229,12 +229,12 @@ if __name__ == "__main__":
                 
 
             elif int(inputs) == 3:
-                #print('Escriba el año que desea consultar: ')
-                #anio = input()
-                #print('Escriba el codigo que desea consultar: ')
-                #cod = input() 
-                #print_req_2(data, anio, cod)
-                print(data)
+                print('Escriba el año que desea consultar: ')
+                anio = input()
+                print('Escriba el codigo que desea consultar: ')
+                cod = input() 
+                print_req_2(data, anio, cod)
+                #print(data)
 
             elif int(inputs) == 4:
                 print_req_3(control)

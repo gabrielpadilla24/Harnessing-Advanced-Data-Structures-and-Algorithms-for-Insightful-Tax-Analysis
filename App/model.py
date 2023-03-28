@@ -177,7 +177,7 @@ def req_2(data, anio, cod):
     r = mp.valueSet(data)
     
     #return x, anio, cod
-    return data
+    return y
 
 
 def req_3(data_structs):
