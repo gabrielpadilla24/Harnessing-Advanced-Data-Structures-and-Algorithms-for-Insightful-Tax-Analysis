@@ -32,6 +32,7 @@ El controlador se encarga de mediar entre la vista y el modelo.
 """
 
 
+
 def new_controller(estructura):
     """
     Crea una instancia del modelo
@@ -107,12 +108,22 @@ def ultimos_x_datos(control, amount, size):
     return data
 
 
-def req_1(data):
+def req_1(data, anio, cod):
     """
     Retorna el resultado del requerimiento 1
     """
-    # TODO: Modificar el requerimiento 1
-    pass
+    
+    
+    start_memory = get_memory()
+    start = get_time()
+    returnable = model.req_1(data, anio, cod)
+    stop = get_time()
+    stop_memory = get_memory()
+    memory = delta_memory(stop_memory, start_memory)
+    time = delta_time(start, stop)
+
+    return (returnable, time, memory)
+
 
 
 def req_2(data, anio, cod):
@@ -190,6 +201,8 @@ def get_memory():
     """
     toma una muestra de la memoria alocada en instante de tiempo
     """
+    tracemalloc.start()
+    tracemalloc.clear_traces()
     return tracemalloc.take_snapshot()
 
 

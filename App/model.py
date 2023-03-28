@@ -154,14 +154,34 @@ def data_size(data_structs):
     return mp.size(data_structs['Años'])
 
 
-def req_1(data):
+def req_1(data, anio, cod):
     """
     Función que soluciona el requerimiento 1
     """
-    # TODO: Realizar el requerimiento 1
-
-    pass
+    datoanio = get_data(data, anio)
     
+    valores = lt.newList()
+    
+    datositerables = lt.iterator(me.getValue(datoanio)["Datos"])
+    
+    for taxroll in datositerables:
+        if taxroll["Código sector económico"] == cod:
+            lt.addLast(valores, taxroll)
+    
+    valores = se.sort(valores, cmpMapSaldoPagar)
+    maxsaldo = lt.firstElement(valores)
+    
+    keys = lt.newList()
+    [lt.addLast(keys, i) for i in ["Código actividad económica","Nombre actividad económica","Código subsector económico","Nombre subsector económico","Total ingresos netos", "Total costos y gastos", "Total saldo a pagar","Total saldo a favor"]]
+    values = lt.newList()
+    
+    for element in lt.iterator(keys):
+        lt.addLast(values, [maxsaldo[element]])
+        
+    returnable = dict(zip(lt.iterator(keys),lt.iterator(values)))
+        
+    
+    return returnable
     
 
 
@@ -269,7 +289,14 @@ def cmpMapTaxAnio(entry_1, entry_2):
         return True
     else:
         return False
-
+    
+def cmpMapSaldoPagar(entry_1, entry_2):
+    
+    
+    if int(entry_1['Total saldo a pagar'])> int(entry_2['Total saldo a pagar']):
+        return True
+    else:
+        return False
 
 def sort(data_structs, tipo_algo):
     """
