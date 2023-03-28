@@ -170,12 +170,12 @@ def req_4(data_structs):
     pass
 
 
-def req_5(data_structs):
+def req_5(data,anio):
     """
     Función que soluciona el requerimiento 5
     """
     # TODO: Realizar el requerimiento 5
-    pass
+    
 
 
 def req_6(data_structs):

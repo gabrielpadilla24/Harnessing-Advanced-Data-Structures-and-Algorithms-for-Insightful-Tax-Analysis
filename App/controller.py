@@ -148,12 +148,13 @@ def req_4(control):
     pass
 
 
-def req_5(control):
+def req_5(data,anio):
     """
     Retorna el resultado del requerimiento 5
     """
     # TODO: Modificar el requerimiento 5
-    pass
+    x=model.req_5(data,anio)
+    return x
 
 def req_6(control):
     """
