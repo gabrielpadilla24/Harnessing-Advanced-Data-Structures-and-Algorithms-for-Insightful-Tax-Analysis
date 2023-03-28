@@ -154,20 +154,25 @@ def data_size(data_structs):
     return mp.size(data_structs['Años'])
 
 
-def req_1(data_structs):
+def req_1(data):
     """
     Función que soluciona el requerimiento 1
     """
     # TODO: Realizar el requerimiento 1
+
     pass
+    
+    
 
 
-def req_2(data_structs):
+def req_2(data, anio, cod):
     """
     Función que soluciona el requerimiento 2
     """
     # TODO: Realizar el requerimiento 2
-    pass
+    x = mp.size(data)
+    
+    return x, anio, cod
 
 
 def req_3(data_structs):
@@ -186,12 +191,12 @@ def req_4(data_structs):
     pass
 
 
-def req_5(data_structs):
+def req_5(data,anio):
     """
     Función que soluciona el requerimiento 5
     """
     # TODO: Realizar el requerimiento 5
-    pass
+    
 
 
 def req_6(data_structs):

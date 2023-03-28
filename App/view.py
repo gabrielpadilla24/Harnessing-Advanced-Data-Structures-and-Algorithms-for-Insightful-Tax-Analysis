@@ -108,7 +108,7 @@ def print_data(control, id):
     data = controller.get_data(control, id)
     print("El dato con el ID", id, "es:", data)
 
-def print_req_1(control):
+def print_req_1(data):
     """
         Función que imprime la solución del Requerimiento 1 en consola
     """
@@ -116,12 +116,13 @@ def print_req_1(control):
     pass
 
 
-def print_req_2(control):
+def print_req_2(data, anio, cod):
     """
         Función que imprime la solución del Requerimiento 2 en consola
     """
     # TODO: Imprimir el resultado del requerimiento 2
-    pass
+    
+    print(controller.req_2(data, anio, cod))
 
 
 def print_req_3(control):
@@ -140,12 +141,12 @@ def print_req_4(control):
     pass
 
 
-def print_req_5(control):
+def print_req_5(data,anio):
     """
         Función que imprime la solución del Requerimiento 5 en consola
     """
     # TODO: Imprimir el resultado del requerimiento 5
-    pass
+    print(controller.req_5(data,anio))
 
 
 def print_req_6(control):
@@ -219,16 +220,20 @@ if __name__ == "__main__":
                 
                 print("Los últimos ", x, "datos cargados son: ")
             
-                print("hola")
+                
                 
                
                 
             elif int(inputs) == 2:
-                print_req_1(data)
-                print(data)
+                (print_req_1(data))
+                
 
             elif int(inputs) == 3:
-                print_req_2(control)
+                print('Escriba el año que desea consultar RAA')
+                anio = input()
+                print('Escriba el codigo que desea consultar')
+                cod = input() 
+                print_req_2(data, anio, cod)
 
             elif int(inputs) == 4:
                 print_req_3(control)
@@ -237,7 +242,9 @@ if __name__ == "__main__":
                 print_req_4(control)
 
             elif int(inputs) == 6:
-                print_req_5(control)
+                print('Escriba el año del que quiere saber el subsector económico que tuvo los mayores  y las tres actividades economicas que menos y mas aportarona este')
+                anio=int(input())
+                print_req_5(data,anio)
 
             elif int(inputs) == 7:
                 print_req_6(control)
