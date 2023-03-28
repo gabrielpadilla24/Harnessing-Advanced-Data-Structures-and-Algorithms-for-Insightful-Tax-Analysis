@@ -223,16 +223,28 @@ def req_3(data_structs):
     pass
 
 
-def req_4(data, anio, cod):
+def req_4(data, anio):
     """
     Función que soluciona el requerimiento 4
     """
     # TODO: Realizar el requerimiento 4
-    x = cod
+    '''x = cod
     datoanio = get_data(data, str(anio))
-    datos_iterables = lt.iterator(me.getValue(datoanio)["Datos"])
+    datos_iterables = lt.iterator(me.getValue(datoanio)["Datos"])'''
+    datoanio = get_data(data, anio)
+    
+    valores = lt.newList()
+    
+    datositerables = lt.iterator(me.getValue(datoanio)["Datos"])
+    
+    for taxroll in datositerables:
+        lt.addLast(valores, taxroll)
+    
+    valores = se.sort(valores, cmpMapCostosGN)
+    maxcostosgn = lt.firstElement(valores)
+    
+    return maxcostosgn["Nombre subsector económico"]
 
-    return datoanio
 
 
 def req_5(data_structs):
@@ -322,6 +334,13 @@ def cmpMapSaldoaFavor(entry_1, entry_2):
         return True
     else:
         return False
+    
+def cmpMapCostosGN(entry_1, entry_2):
+    if int(entry_1['Costos y gastos nómina']) > int(entry_2['Costos y gastos nómina']):
+        return True
+    else:
+        return False
+
 
 
 def sort(data_structs, tipo_algo):
