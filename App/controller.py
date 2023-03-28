@@ -131,7 +131,15 @@ def req_2(data, anio, cod):
     Retorna el resultado del requerimiento 2
     """
     # TODO: Modificar el requerimiento 2
-    return model.req_2(data, anio, cod)
+    start_memory = get_memory()
+    start = get_time()
+    returnable = model.req_2(data, anio, cod)
+    stop = get_time()
+    stop_memory = get_memory()
+    memory = delta_memory(stop_memory, start_memory)
+    time = delta_time(start, stop)
+
+    return (returnable, time, memory)
 
 
 def req_3(control):

@@ -123,8 +123,11 @@ def print_req_2(data, anio, cod):
         Función que imprime la solución del Requerimiento 2 en consola
     """
     # TODO: Imprimir el resultado del requerimiento 2
-    
-    print(controller.req_2(data, anio, cod))
+    print(tabulate(controller.req_2(data, anio, cod)[0], headers="keys",tablefmt="simple_grid", maxheadercolwidths=20, maxcolwidths=20))
+    print("Tiempo tomado:", controller.req_2(data, anio, cod)[1], "ms.")
+    print("Memoria utilizada:", controller.req_2(data, anio, cod)[2], "B.")
+    print()
+    #print(controller.req_2(data, anio, cod))
 
 
 def print_req_3(control):
@@ -234,11 +237,14 @@ if __name__ == "__main__":
                 
 
             elif int(inputs) == 3:
-                print('Escriba el año que desea consultar: ')
-                anio = input()
-                print('Escriba el codigo que desea consultar: ')
-                cod = input() 
-                print_req_2(data, anio, cod)
+                anio = input("Año a consultar:")
+                cod = input("Código de sector económico a consultar:")
+                (print_req_2(data, anio, cod))
+                #print('Escriba el año que desea consultar: ')
+                #anio = input()
+                #print('Escriba el codigo que desea consultar: ')
+                #cod = input() 
+                #print_req_2(data, anio, cod)
                 #print(data)
 
             elif int(inputs) == 4:

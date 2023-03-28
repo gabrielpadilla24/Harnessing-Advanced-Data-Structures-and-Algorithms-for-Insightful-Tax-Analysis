@@ -189,16 +189,30 @@ def req_2(data, anio, cod):
     """
     Función que soluciona el requerimiento 2
     """
-    # TODO: Realizar el requerimiento 2
-    y = mp.get(data, str(anio))
-    x = mp.size(data)
-
-    z = y['value']['Datos']['first']
-
+    datoanio = get_data(data, anio)
     
+    valores = lt.newList()
     
-    #return x, anio, cod
-    return z
+    datositerables = lt.iterator(me.getValue(datoanio)["Datos"])
+    
+    for taxroll in datositerables:
+        if taxroll["Código sector económico"] == cod:
+            lt.addLast(valores, taxroll)
+    
+    valores = se.sort(valores, cmpMapSaldoaFavor)
+    maxsaldo = lt.firstElement(valores)
+    
+    keys = lt.newList()
+    [lt.addLast(keys, i) for i in ["Código actividad económica","Nombre actividad económica","Código subsector económico","Nombre subsector económico","Total ingresos netos", "Total costos y gastos", "Total saldo a pagar","Total saldo a favor"]]
+    values = lt.newList()
+    
+    for element in lt.iterator(keys):
+        lt.addLast(values, [maxsaldo[element]])
+        
+    returnable = dict(zip(lt.iterator(keys),lt.iterator(values)))
+        
+    
+    return returnable
 
 
 def req_3(data_structs):
@@ -298,6 +312,13 @@ def cmpMapSaldoPagar(entry_1, entry_2):
         return True
     else:
         return False
+    
+def cmpMapSaldoaFavor(entry_1, entry_2):
+    if int(entry_1['Total saldo a favor'])> int(entry_2['Total saldo a favor']):
+        return True
+    else:
+        return False
+
 
 def sort(data_structs, tipo_algo):
     """
