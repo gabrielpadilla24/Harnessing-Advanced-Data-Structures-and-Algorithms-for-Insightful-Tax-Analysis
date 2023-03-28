@@ -223,12 +223,16 @@ def req_3(data_structs):
     pass
 
 
-def req_4(data_structs):
+def req_4(data, anio, cod):
     """
     Función que soluciona el requerimiento 4
     """
     # TODO: Realizar el requerimiento 4
-    pass
+    x = cod
+    datoanio = get_data(data, str(anio))
+    datos_iterables = lt.iterator(me.getValue(datoanio)["Datos"])
+
+    return datoanio
 
 
 def req_5(data_structs):

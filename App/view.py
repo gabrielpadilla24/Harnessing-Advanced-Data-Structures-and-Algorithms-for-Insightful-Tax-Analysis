@@ -138,12 +138,12 @@ def print_req_3(control):
     pass
 
 
-def print_req_4(control):
+def print_req_4(data, anio, cod):
     """
         Función que imprime la solución del Requerimiento 4 en consola
     """
     # TODO: Imprimir el resultado del requerimiento 4
-    pass
+    print(controller.req_2(data, anio, cod))
 
 
 def print_req_5(control):
@@ -151,7 +151,7 @@ def print_req_5(control):
         Función que imprime la solución del Requerimiento 5 en consola
     """
     # TODO: Imprimir el resultado del requerimiento 5
-    pass
+    
 
 
 def print_req_6(control):
@@ -237,8 +237,8 @@ if __name__ == "__main__":
                 
 
             elif int(inputs) == 3:
-                anio = input("Año a consultar:")
-                cod = input("Código de sector económico a consultar:")
+                anio = input("Año a consultar: ")
+                cod = input("Código de sector económico a consultar: ")
                 (print_req_2(data, anio, cod))
                 #print('Escriba el año que desea consultar: ')
                 #anio = input()
@@ -251,7 +251,9 @@ if __name__ == "__main__":
                 print_req_3(control)
 
             elif int(inputs) == 5:
-                print_req_4(control)
+                anio = input('Año a consultar: ')
+                cod = input('Código de sector económico a consultar: ')
+                print_req_4(data, anio, cod)
 
             elif int(inputs) == 6:
                 print_req_5(control)
