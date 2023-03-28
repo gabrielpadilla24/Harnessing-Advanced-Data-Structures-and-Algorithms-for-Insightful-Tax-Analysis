@@ -253,7 +253,7 @@ if __name__ == "__main__":
             elif int(inputs) == 5:
                 anio = input('Año a consultar: ')
                 cod = input('Código de sector económico a consultar: ')
-                print_req_4(data, anio, cod)
+                print_req_4(data,anio, cod)
 
             elif int(inputs) == 6:
                 print_req_5(control)
