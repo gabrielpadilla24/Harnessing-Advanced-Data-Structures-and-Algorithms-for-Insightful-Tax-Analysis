@@ -244,6 +244,7 @@ if __name__ == "__main__":
             elif int(inputs) == 6:
                 print('Escriba el año del que quiere saber el subsector económico que tuvo los mayores descuentos tributarios y las tres actividades economicas que menos y mas aportarona este')
                 anio=int(input())
+                anio=str(anio)
                 print_req_5(data,anio)
 
             elif int(inputs) == 7:

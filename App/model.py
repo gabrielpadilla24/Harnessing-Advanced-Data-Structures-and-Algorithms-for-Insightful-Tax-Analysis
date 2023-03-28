@@ -196,14 +196,13 @@ def req_5(data,anio):
     Función que soluciona el requerimiento 5
     """
     # TODO: Realizar el requerimiento 5
-    mapa_anio=mp.get(data,str(anio))
+    mapa_anio=mp.get(data,anio)
     lista_anio = me.getValue(mapa_anio)
-    for i in lista_anio:
-        print(i['Código subsector económico'])
     
     
     
-    return None
+    
+    return lista_anio
 
 
 def req_6(data_structs):
