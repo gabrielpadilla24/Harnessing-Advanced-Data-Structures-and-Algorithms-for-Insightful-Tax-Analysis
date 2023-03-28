@@ -228,9 +228,6 @@ def req_4(data, anio):
     Función que soluciona el requerimiento 4
     """
     # TODO: Realizar el requerimiento 4
-    '''x = cod
-    datoanio = get_data(data, str(anio))
-    datos_iterables = lt.iterator(me.getValue(datoanio)["Datos"])'''
     datoanio = get_data(data, anio)
     
     subsectores = {}
@@ -253,11 +250,15 @@ def req_4(data, anio):
         'Código Subsector Económico': max_subsector,
         'Código sector económico': info_subsector['Código sector económico'],
         'Nombre sector económico': info_subsector['Nombre sector económico'],
-        'Nombre subsector económico': info_subsector['Nombre subsector económico']
+        'Nombre subsector económico': info_subsector['Nombre subsector económico'],
+        'Costos y gastos nómina': info_subsector['Costos y gastos nómina'],
+        'Total Costos y Gastos': info_subsector['Total costos y gastos'],
+        'Total ingresos netos': info_subsector['Total ingresos netos'],
+        'Total saldo a pagar' : info_subsector['Total saldo a pagar'],
+        'Total saldo a favor': info_subsector['Total saldo a favor']
     }
 
     
-
 
 def obtener_informacion_subsector(data, anio, cod_subsector):
     """
@@ -269,7 +270,7 @@ def obtener_informacion_subsector(data, anio, cod_subsector):
     codigo_sector = None
     nombre_sector = None
     nombre_subsector = None
-    total_costos_nomina = 0
+    total_cyg_nomina = 0
     total_ingresos_netos = 0
     total_costos_gastos = 0
     total_saldo_por_pagar = 0
@@ -281,13 +282,21 @@ def obtener_informacion_subsector(data, anio, cod_subsector):
                 codigo_sector = taxroll["Código sector económico"]
                 nombre_sector = taxroll["Nombre sector económico"]
                 nombre_subsector = taxroll["Nombre subsector económico"]
-            
-    
+                total_cyg_nomina += int(taxroll['Costos y gastos nómina'])
+                total_costos_gastos += int(taxroll["Total costos y gastos"])
+                total_ingresos_netos += int(taxroll['Total ingresos netos'])
+                total_saldo_por_pagar += int(taxroll['Total saldo a pagar'])
+                total_saldo_favor += int(taxroll['Total saldo a favor'])
     return {
         'Código sector económico': codigo_sector,
         'Nombre sector económico': nombre_sector,
         'Código subsector económico': cod_subsector,
         'Nombre subsector económico': nombre_subsector,
+        'Costos y gastos nómina': total_cyg_nomina,
+        'Total costos y gastos' : total_costos_gastos,
+        'Total ingresos netos': total_ingresos_netos,
+        'Total saldo a pagar' : total_saldo_por_pagar,
+        'Total saldo a favor': total_saldo_favor
         
     }
 
