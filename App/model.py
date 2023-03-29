@@ -222,7 +222,7 @@ def req_3(data_structs):
     # TODO: Realizar el requerimiento 3
     pass
 
-
+'''
 
 def req_4(data, anio):  
     datoanio = get_data(data, anio)
@@ -258,12 +258,111 @@ def req_4(data, anio):
         'Total saldo a favor': info_subsector['Total saldo a favor']
     }
 
+  '''
+
+
+def req_4(data, anio):  
+    datoanio = get_data(data, anio)
+    
+    subsectores = mp.newMap(numelements=500, maptype='CHAINING')
+
+
+    datositerables = lt.iterator(me.getValue(datoanio)["Datos"])
+    dictio = {}
+    for taxroll in datositerables:
+        subsector = taxroll['Código subsector económico']
+
+        if mp.contains(subsectores, subsector):
+            cyg_nomina_actual = mp.get(subsectores, subsector)
+            v_cyg_actual = cyg_nomina_actual['value']
+            cyg_suma = v_cyg_actual + int(taxroll['Costos y gastos nómina'])
+            mp.put(subsectores, subsector, cyg_suma)
+
+        else: 
+            mp.put(subsectores, subsector, int(taxroll['Costos y gastos nómina']))
+     
+        dictio[subsector] = mp.get(subsectores, subsector)
+
+    max_key = None
+    max_value = float('-inf')  # inicializar con el valor mínimo posible
+
+    for key, value in dictio.items():
+        if value['value'] > max_value:
+            max_key = key
+            max_value = value['value']
+
+
+    info_subsector = obtener_informacion_subsector(data, anio, max_key)
+    
+
+    
+    return {
+        
+        
+        'Código sector económico': info_subsector['Código sector económico'],
+        'Nombre sector económico': info_subsector['Nombre sector económico'],
+        'Código Subsector Económico': max_key,
+        'Nombre subsector económico': info_subsector['Nombre subsector económico'], #√
+        'Total de Costos y gastos nómina del subsector económico': max_value,
+        'Total ingresos netos del subsector económico': info_subsector['Total ingresos netos'],
+        'Total Costos y Gastos del subsector económico': info_subsector['Total costos y gastos'],
+        'Total saldo a pagar del subsector económico' : info_subsector['Total saldo a pagar'],
+        'Total saldo a favor del subsector económico': info_subsector['Total saldo a favor']
+    }
+
+
+    
+
+    
+'''
+    mi_mapa = mp.newMap()
+
+    # agregar un valor inicial a la llave 'a'
+    mp.put(mi_mapa, 'a', 50)
+
+    # obtener el valor actual de la llave 'a'
+    valor_actual = mp.get(mi_mapa, 'a')
+    v_actual_int = valor_actual['value']
+
+
+    # sumar el valor deseado
+    nuevo_valor = v_actual_int + 100
+
+    # asignar el nuevo valor a la llave 'a'
+    mp.put(mi_mapa, 'a', nuevo_valor)
+
+    # imprimir el valor actualizado de la llave 'a'
+    #return (mp.get(mi_mapa, 'a'))'''
     
 
 
 
+'''   for taxroll in datositerables:
+        subsector = taxroll["Código subsector económico"]
+        if subsector in subsectores:
+            subsectores[subsector] += int(taxroll["Costos y gastos nómina"])
+        else:
+            subsectores[subsector] = int(taxroll["Costos y gastos nómina"])
+            
+    sorted_subsectores = sorted(subsectores.items(), key=lambda x: x[1], reverse=True)
+    max_subsector = sorted_subsectores[0][0]
 
+    info_subsector = obtener_informacion_subsector(data, anio, max_subsector)
 
+    
+    return {
+        'Código Subsector Económico': max_subsector,
+        'Código sector económico': info_subsector['Código sector económico'],
+        'Nombre sector económico': info_subsector['Nombre sector económico'],
+        'Nombre subsector económico': info_subsector['Nombre subsector económico'],
+        'Costos y gastos nómina': sorted_subsectores[0][1],
+        'Total Costos y Gastos': info_subsector['Total costos y gastos'],
+        'Total ingresos netos': info_subsector['Total ingresos netos'],
+        'Total saldo a pagar' : info_subsector['Total saldo a pagar'],
+        'Total saldo a favor': info_subsector['Total saldo a favor']
+    }'''
+
+    
 
 
 
