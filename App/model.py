@@ -154,14 +154,34 @@ def data_size(data_structs):
     return mp.size(data_structs['Años'])
 
 
-def req_1(data):
+def req_1(data, anio, cod):
     """
     Función que soluciona el requerimiento 1
     """
-    # TODO: Realizar el requerimiento 1
-
-    pass
+    datoanio = get_data(data, anio)
     
+    valores = lt.newList()
+    
+    datositerables = lt.iterator(me.getValue(datoanio)["Datos"])
+    
+    for taxroll in datositerables:
+        if taxroll["Código sector económico"] == cod:
+            lt.addLast(valores, taxroll)
+    
+    valores = se.sort(valores, cmpMapSaldoPagar)
+    maxsaldo = lt.firstElement(valores)
+    
+    keys = lt.newList()
+    [lt.addLast(keys, i) for i in ["Código actividad económica","Nombre actividad económica","Código subsector económico","Nombre subsector económico","Total ingresos netos", "Total costos y gastos", "Total saldo a pagar","Total saldo a favor"]]
+    values = lt.newList()
+    
+    for element in lt.iterator(keys):
+        lt.addLast(values, [maxsaldo[element]])
+        
+    returnable = dict(zip(lt.iterator(keys),lt.iterator(values)))
+        
+    
+    return returnable
     
 
 
@@ -169,10 +189,30 @@ def req_2(data, anio, cod):
     """
     Función que soluciona el requerimiento 2
     """
-    # TODO: Realizar el requerimiento 2
-    x = mp.size(data)
+    datoanio = get_data(data, anio)
     
-    return x, anio, cod
+    valores = lt.newList()
+    
+    datositerables = lt.iterator(me.getValue(datoanio)["Datos"])
+    
+    for taxroll in datositerables:
+        if taxroll["Código sector económico"] == cod:
+            lt.addLast(valores, taxroll)
+    
+    valores = se.sort(valores, cmpMapSaldoaFavor)
+    maxsaldo = lt.firstElement(valores)
+    
+    keys = lt.newList()
+    [lt.addLast(keys, i) for i in ["Código actividad económica","Nombre actividad económica","Código subsector económico","Nombre subsector económico","Total ingresos netos", "Total costos y gastos", "Total saldo a pagar","Total saldo a favor"]]
+    values = lt.newList()
+    
+    for element in lt.iterator(keys):
+        lt.addLast(values, [maxsaldo[element]])
+        
+    returnable = dict(zip(lt.iterator(keys),lt.iterator(values)))
+        
+    
+    return returnable
 
 
 def req_3(data_structs):
@@ -183,12 +223,105 @@ def req_3(data_structs):
     pass
 
 
-def req_4(data_structs):
+
+def req_4(data, anio):  
+    datoanio = get_data(data, anio)
+    
+    subsectores = {}
+    #subsectores = mp.newMap(numelements=500, maptype='CHAINING')
+
+
+    datositerables = lt.iterator(me.getValue(datoanio)["Datos"])
+
+    for taxroll in datositerables:
+        subsector = taxroll["Código subsector económico"]
+        if subsector in subsectores:
+            subsectores[subsector] += int(taxroll["Costos y gastos nómina"])
+        else:
+            subsectores[subsector] = int(taxroll["Costos y gastos nómina"])
+            
+    sorted_subsectores = sorted(subsectores.items(), key=lambda x: x[1], reverse=True)
+    max_subsector = sorted_subsectores[0][0]
+
+    info_subsector = obtener_informacion_subsector(data, anio, max_subsector)
+
+    
+    return {
+        'Código Subsector Económico': max_subsector,
+        'Código sector económico': info_subsector['Código sector económico'],
+        'Nombre sector económico': info_subsector['Nombre sector económico'],
+        'Nombre subsector económico': info_subsector['Nombre subsector económico'],
+        'Costos y gastos nómina': sorted_subsectores[0][1],
+        'Total Costos y Gastos': info_subsector['Total costos y gastos'],
+        'Total ingresos netos': info_subsector['Total ingresos netos'],
+        'Total saldo a pagar' : info_subsector['Total saldo a pagar'],
+        'Total saldo a favor': info_subsector['Total saldo a favor']
+    }
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def obtener_informacion_subsector(data, anio, cod_subsector):
     """
-    Función que soluciona el requerimiento 4
+    Función que devuelve la información del subsector económico dado en el año dado.
     """
-    # TODO: Realizar el requerimiento 4
-    pass
+    datoanio = get_data(data, anio)
+    datositerables = lt.iterator(me.getValue(datoanio)["Datos"])
+    
+    codigo_sector = None
+    nombre_sector = None
+    nombre_subsector = None
+    total_cyg_nomina = 0
+    total_ingresos_netos = 0
+    total_costos_gastos = 0
+    total_saldo_por_pagar = 0
+    total_saldo_favor = 0
+    
+    for taxroll in datositerables:
+        if taxroll["Código subsector económico"] == cod_subsector:
+            codigo_sector = taxroll["Código sector económico"]
+            nombre_sector = taxroll["Nombre sector económico"]
+            nombre_subsector = taxroll["Nombre subsector económico"]
+            total_cyg_nomina += int(taxroll['Costos y gastos nómina'])
+            total_costos_gastos += int(taxroll["Total costos y gastos"])
+            total_ingresos_netos += int(taxroll['Total ingresos netos'])
+            total_saldo_por_pagar += int(taxroll['Total saldo a pagar'])
+            total_saldo_favor += int(taxroll['Total saldo a favor'])
+    return {
+        'Código sector económico': codigo_sector,
+        'Nombre sector económico': nombre_sector,
+        'Código subsector económico': cod_subsector,
+        'Nombre subsector económico': nombre_subsector,
+        'Costos y gastos nómina': total_cyg_nomina,
+        'Total costos y gastos' : total_costos_gastos,
+        'Total ingresos netos': total_ingresos_netos,
+        'Total saldo a pagar' : total_saldo_por_pagar,
+        'Total saldo a favor': total_saldo_favor
+        
+    }
+
+
 
 
 def req_5(data,anio):
@@ -272,6 +405,27 @@ def cmpMapTaxAnio(entry_1, entry_2):
         return True
     else:
         return False
+    
+def cmpMapSaldoPagar(entry_1, entry_2):
+    
+    
+    if int(entry_1['Total saldo a pagar'])> int(entry_2['Total saldo a pagar']):
+        return True
+    else:
+        return False
+    
+def cmpMapSaldoaFavor(entry_1, entry_2):
+    if int(entry_1['Total saldo a favor'])> int(entry_2['Total saldo a favor']):
+        return True
+    else:
+        return False
+    
+def cmpMapCostosGN(entry_1, entry_2):
+    if int(entry_1['Costos y gastos nómina']) > int(entry_2['Costos y gastos nómina']):
+        return True
+    else:
+        return False
+
 
 
 def sort(data_structs, tipo_algo):

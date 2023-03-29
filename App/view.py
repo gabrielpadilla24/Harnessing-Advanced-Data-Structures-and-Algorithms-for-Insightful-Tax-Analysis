@@ -101,19 +101,21 @@ def load_data(maptype, porcentaje,sorting_method):
         
     
 
-def print_data(control, id):
+def print_data(data, id):
     """
         Función que imprime un dato dado su ID
     """
-    data = controller.get_data(control, id)
-    print("El dato con el ID", id, "es:", data)
+    dato = controller.get_data(data, id)
+    print("El dato con el ID", id, "es:", dato)
 
-def print_req_1(data):
+def print_req_1(data, anio, cod):
     """
         Función que imprime la solución del Requerimiento 1 en consola
     """
-    # TODO: Imprimir el resultado del requerimiento 1
-    pass
+    print(tabulate(controller.req_1(data, anio, cod)[0], headers="keys",tablefmt="simple_grid", maxheadercolwidths=20, maxcolwidths=20))
+    print("Tiempo tomado:", controller.req_1(data, anio, cod)[1], "ms.")
+    print("Memoria utilizada:", controller.req_1(data, anio, cod)[2], "B.")
+    print()
 
 
 def print_req_2(data, anio, cod):
@@ -121,8 +123,11 @@ def print_req_2(data, anio, cod):
         Función que imprime la solución del Requerimiento 2 en consola
     """
     # TODO: Imprimir el resultado del requerimiento 2
-    
-    print(controller.req_2(data, anio, cod))
+    print(tabulate(controller.req_2(data, anio, cod)[0], headers="keys",tablefmt="simple_grid", maxheadercolwidths=20, maxcolwidths=20))
+    print("Tiempo tomado:", controller.req_2(data, anio, cod)[1], "ms.")
+    print("Memoria utilizada:", controller.req_2(data, anio, cod)[2], "B.")
+    print()
+    #print(controller.req_2(data, anio, cod))
 
 
 def print_req_3(control):
@@ -133,12 +138,12 @@ def print_req_3(control):
     pass
 
 
-def print_req_4(control):
+def print_req_4(data, anio):
     """
         Función que imprime la solución del Requerimiento 4 en consola
     """
     # TODO: Imprimir el resultado del requerimiento 4
-    pass
+    print(controller.req_4(data, anio))
 
 
 def print_req_5(data,anio):
@@ -187,6 +192,7 @@ if __name__ == "__main__":
         print_menu()
         inputs = input('Seleccione una opción para continuar\n')
         try:
+            
             if int(inputs) == 1:
                 print("Ponga 1 si quiere de Maptype CHAINING")
                 print("Ponga 2 si quiere de Maptype PROBING")
@@ -225,21 +231,28 @@ if __name__ == "__main__":
                
                 
             elif int(inputs) == 2:
-                (print_req_1(data))
+                anio = input("Año a consultar:")
+                cod = input("Código de sector económico a consultar:")
+                (print_req_1(data, anio, cod))
                 
 
             elif int(inputs) == 3:
-                print('Escriba el año que desea consultar RAA')
-                anio = input()
-                print('Escriba el codigo que desea consultar')
-                cod = input() 
-                print_req_2(data, anio, cod)
+                anio = input("Año a consultar: ")
+                cod = input("Código de sector económico a consultar: ")
+                (print_req_2(data, anio, cod))
+                #print('Escriba el año que desea consultar: ')
+                #anio = input()
+                #print('Escriba el codigo que desea consultar: ')
+                #cod = input() 
+                #print_req_2(data, anio, cod)
+                #print(data)
 
             elif int(inputs) == 4:
                 print_req_3(control)
 
             elif int(inputs) == 5:
-                print_req_4(control)
+                anio = input('Año a consultar: ')
+                print_req_4(data,anio)
 
             elif int(inputs) == 6:
                 print('Escriba el año del que quiere saber el subsector económico que tuvo los mayores descuentos tributarios y las tres actividades economicas que menos y mas aportarona este')
@@ -260,6 +273,8 @@ if __name__ == "__main__":
                 working = False
                 print("\nGracias por utilizar el programa")
                 
+            elif int(inputs) == 11:
+                print_data(data, input())                
             else:
                 print("Opción errónea, vuelva a elegir.\n")
         except Exception as exp:
