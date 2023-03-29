@@ -331,15 +331,45 @@ def req_5(data,anio):
     # TODO: Realizar el requerimiento 5
     mapa_anio=mp.get(data,anio)
     lista_anio = me.getValue(mapa_anio)['Datos']
-    for sector in lista_anio:
-        print(sector)
-        print()
+    iterable= lt.iterator(lista_anio)
+    #Crear mapa por subsectores
+    mapa =new_data_structs(1)
+    lista_codigos=[]
+    for sector in iterable:
+        if sector['Código subsector económico'] not in lista_codigos:
+            lista_codigos.append(sector['Código subsector económico'])
+        add_data(mapa,sector['Código subsector económico'], sector)
+        
+    mapa_x_subsector=mapa
+    final=subsector_con_mayor_desc(mapa_x_subsector,lista_codigos)
+    print(lista_codigos)
+        
+        
     
     
     
     return None
 
-
+def subsector_con_mayor_desc(mapa,lista):
+    
+    mayor_impuesto=0
+    mayor_subsector=''
+    for i in lista:
+        mapa_subsector=mp.get(mapa,str(i))
+        lista_anio=me.getValue(mapa_subsector)['Datos']
+        iterable2= lt.iterator(lista_anio)
+        impuesto_total=0
+        
+        for x in iterable2:
+            impuesto_total+=int(x['Descuentos tributarios'])
+        if impuesto_total>mayor_impuesto:
+            mayor_subsector=lista_anio
+    print(mayor_subsector)
+    
+    
+    
+    
+    
 def req_6(data_structs):
     """
     Función que soluciona el requerimiento 6
