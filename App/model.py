@@ -197,12 +197,14 @@ def req_5(data,anio):
     """
     # TODO: Realizar el requerimiento 5
     mapa_anio=mp.get(data,anio)
-    lista_anio = me.getValue(mapa_anio)
+    lista_anio = me.getValue(mapa_anio)['Datos']
+    for sector in lista_anio:
+        print(sector)
+        print()
     
     
     
-    
-    return lista_anio
+    return None
 
 
 def req_6(data_structs):
