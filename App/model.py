@@ -287,7 +287,7 @@ def req_4(data, anio):
         if value['value'] > max_value:
             max_key = key
             max_value = value['value']
-
+    
     info_subsector = obtener_informacion_subsector(data, anio, max_key)
     return {
         'Código sector económico': info_subsector['Código sector económico'],
@@ -300,8 +300,6 @@ def req_4(data, anio):
         'Total saldo a pagar del subsector económico' : info_subsector['Total saldo a pagar'],
         'Total saldo a favor del subsector económico': info_subsector['Total saldo a favor']
     }
-
-
 
 
 
