@@ -97,6 +97,7 @@ def load_data(maptype, porcentaje,sorting_method,Memoria):
 
     data = controller.load_data(maptype,nombre_archivo)
     numero_data=0
+    lista2 = lt.newList()
     for anio in range(2012,2022):
         anio=str(anio)
         dato=controller.get_data(data,anio)
@@ -104,8 +105,11 @@ def load_data(maptype, porcentaje,sorting_method,Memoria):
         lista_anio=dato_anio['Datos']
         lista_ordenada=controller.sort(lista_anio,sorting_method)
         primero_y_ultimo=controller.primeros_y_ultimos_Dat(lista_ordenada)
+        lt.addLast(lista2, primero_y_ultimo)
         numero_data=numero_data+lt.size(lista_ordenada)
-        print(str(primero_y_ultimo))
+
+    PyUiterable = lt.iterator(lista2)
+
     if Memoria==True:
         memoria2=controller.get_memory() 
         controller.tracemalloc_end()
@@ -113,7 +117,7 @@ def load_data(maptype, porcentaje,sorting_method,Memoria):
         memoria_total=round(memoria_total,2)
         resp=('La memoria total es:'+str(memoria_total)+' KB')
         
-    return data,resp
+    return data,resp,PyUiterable
         
     
 
@@ -298,7 +302,11 @@ if __name__ == "__main__":
                 print("Cargando información de los archivos ....\n")
                 resp=load_data(maptype,porcentaje,tipo_algo,memoria)
                 data=resp[0]
-                print(data)
+                for anio in resp[2]:
+                    for elem in lt.iterator(anio):
+                        print("dato")
+                        print(tabulate(elem, headers="keys",tablefmt="simple_grid", maxheadercolwidths=20))
+
                 if resp[1]!=None:
                     print(resp[1])
                 print("Total de lineas de datos cargadas:  ")

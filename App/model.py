@@ -65,9 +65,9 @@ def primeros_y_ultimos_Dat(list):
     ultimos_iterando=lt.iterator(ultimo)
     
     for i in primeros_iterando:
-        lt.addLast(lista,i)
+        lt.addLast(lista,[i])
     for i in ultimos_iterando:
-        lt.addFirst(lista,i)
+        lt.addFirst(lista,[i])
     return lista
 
 def new_data_structs(maptype):
