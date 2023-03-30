@@ -41,7 +41,7 @@ se hace la solicitud al controlador para ejecutar la
 operación solicitada
 """
 
-
+data=''
 def new_controller(estructura):
     """
         Se crea una instancia del controlador
@@ -63,7 +63,7 @@ def print_menu():
     print("0- Salir")
 
 
-def load_data(maptype, porcentaje):
+def load_data(maptype, porcentaje,sorting_method):
     """
     Carga los datos
     """
@@ -86,22 +86,36 @@ def load_data(maptype, porcentaje):
         nombre_archivo = "Salida_agregados_renta_juridicos_AG-small.csv"
 
     data = controller.load_data(maptype,nombre_archivo)
-   
+    numero_data=0
+    for anio in range(2012,2022):
+        anio=str(anio)
+        dato=controller.get_data(data,anio)
+        dato_anio=me.getValue(dato)
+        lista_anio=dato_anio['Datos']
+        lista_ordenada=controller.sort(lista_anio,sorting_method)
+        primero_y_ultimo=controller.primeros_y_ultimos_Dat(lista_ordenada)
+        numero_data=numero_data+lt.size(lista_ordenada)
+        print(str(primero_y_ultimo))                              
+        
     return data
+        
+    
 
-def print_data(control, id):
+def print_data(data, id):
     """
         Función que imprime un dato dado su ID
     """
-    data = controller.get_data(control, id)
-    print("El dato con el ID", id, "es:", data)
+    dato = controller.get_data(data, id)
+    print("El dato con el ID", id, "es:", dato)
 
-def print_req_1(data):
+def print_req_1(data, anio, cod):
     """
         Función que imprime la solución del Requerimiento 1 en consola
     """
-    # TODO: Imprimir el resultado del requerimiento 1
-    pass
+    print(tabulate(controller.req_1(data, anio, cod)[0], headers="keys",tablefmt="simple_grid", maxheadercolwidths=20, maxcolwidths=20))
+    print("Tiempo tomado:", controller.req_1(data, anio, cod)[1], "ms.")
+    print("Memoria utilizada:", controller.req_1(data, anio, cod)[2], "B.")
+    print()
 
 
 def print_req_2(data, anio, cod):
@@ -109,8 +123,11 @@ def print_req_2(data, anio, cod):
         Función que imprime la solución del Requerimiento 2 en consola
     """
     # TODO: Imprimir el resultado del requerimiento 2
-    
-    print(controller.req_2(data, anio, cod))
+    print(tabulate(controller.req_2(data, anio, cod)[0], headers="keys",tablefmt="simple_grid", maxheadercolwidths=20, maxcolwidths=20))
+    print("Tiempo tomado:", controller.req_2(data, anio, cod)[1], "ms.")
+    print("Memoria utilizada:", controller.req_2(data, anio, cod)[2], "B.")
+    print()
+    #print(controller.req_2(data, anio, cod))
 
 
 def print_req_3(control):
@@ -121,12 +138,66 @@ def print_req_3(control):
     pass
 
 
-def print_req_4(control):
+def print_req_4(data, anio):
     """
         Función que imprime la solución del Requerimiento 4 en consola
     """
+
     # TODO: Imprimir el resultado del requerimiento 4
-    pass
+
+    l_respuesta1 = len(controller.req_4(data, anio))
+    respuesta_1 = controller.req_4(data, anio)
+
+    if l_respuesta1 != 9:
+        tabla = respuesta_1[0]
+        print('========== Req No. 4 Answer ==========')
+        print(f'El subsector económico con mayores costos y gastos de nómina para el año {anio}')
+        table_data = [
+            ['Código sector económico', 'Nombre sector económico', 'Código Subsector Económico', 'Nombre subsector económico', 'Total de Costos y gastos nómina del subsector económico', 'Total ingresos netos del subsector económico', 'Total Costos y Gastos del subsector económico', 'Total saldo a pagar del subsector económico', 'Total saldo a favor del subsector económico'],
+            [tabla['Código sector económico'], tabla['Nombre sector económico'], tabla['Código Subsector Económico'], tabla['Nombre subsector económico'], tabla['Total de Costos y gastos nómina del subsector económico'], tabla['Total ingresos netos del subsector económico'], tabla['Total Costos y Gastos del subsector económico'], tabla['Total saldo a pagar del subsector económico'], tabla['Total saldo a favor del subsector económico']]   
+        ]
+        print(tabulate(table_data, headers='firstrow', tablefmt='fancy_grid'))
+
+        top1, top2, top3, peor1, peor2, peor3 = respuesta_1[3], respuesta_1[2], respuesta_1[1], respuesta_1[4], respuesta_1[5], respuesta_1[6]
+
+        print('')
+        print('Las 3 actividades económicas que más aportaron al valor total de costos y gastos de nómina del subsector son: ')
+        print('')
+        tabla1 = [
+            ['Código Actividad económica', 'Nombre Actividad Económica', 'Costos y gastos nómina', 'El total de ingresos netos', 'El total de costos y gastos', 'El total de saldo a pagar','El total de saldo a favor'],
+            [top1['Código Actividad económica'],top1['Nombre Actividad Económica'],top1['Costos y gastos nómina'],top1['El total de ingresos netos'],top1['El total de costos y gastos'],top1['El total de saldo a pagar'],top1['El total de saldo a favor']],
+            [top2['Código Actividad económica'],top2['Nombre Actividad Económica'],top2['Costos y gastos nómina'],top2['El total de ingresos netos'],top2['El total de costos y gastos'],top2['El total de saldo a pagar'],top2['El total de saldo a favor']],
+            [top3['Código Actividad económica'],top3['Nombre Actividad Económica'],top3['Costos y gastos nómina'],top3['El total de ingresos netos'],top3['El total de costos y gastos'],top3['El total de saldo a pagar'],top3['El total de saldo a favor']]
+        ]
+        print(tabulate(tabla1, headers='firstrow', tablefmt='fancy_grid'))
+
+        print('')
+        print('Las 3 actividades económicas que menos aportaron al valor total de costos y gastos de nómina del subsector son: ')
+        print('')
+        tabla2 = [
+            ['Código Actividad económica', 'Nombre Actividad Económica', 'Costos y gastos nómina', 'El total de ingresos netos', 'El total de costos y gastos', 'El total de saldo a pagar','El total de saldo a favor'],
+            [peor1['Código Actividad económica'],peor1['Nombre Actividad Económica'],peor1['Costos y gastos nómina'],peor1['El total de ingresos netos'],peor1['El total de costos y gastos'],peor1['El total de saldo a pagar'],peor1['El total de saldo a favor']],
+            [peor2['Código Actividad económica'],peor2['Nombre Actividad Económica'],peor2['Costos y gastos nómina'],peor2['El total de ingresos netos'],peor2['El total de costos y gastos'],peor2['El total de saldo a pagar'],peor2['El total de saldo a favor']],
+            [peor3['Código Actividad económica'],peor3['Nombre Actividad Económica'],peor3['Costos y gastos nómina'],peor3['El total de ingresos netos'],peor3['El total de costos y gastos'],peor3['El total de saldo a pagar'],peor3['El total de saldo a favor']]
+        ]
+
+        print(tabulate(tabla2, headers='firstrow', tablefmt='fancy_grid'))  
+      
+    else:
+        tabla = respuesta_1
+        print('========== Req No. 4 Answer ==========')
+        print(f'El subsector económico con mayores costos y gastos de nómina para el año {anio}')
+        
+        table_data = [
+            ['Código sector económico', 'Nombre sector económico', 'Código Subsector Económico', 'Nombre subsector económico', 'Total de Costos y gastos nómina del subsector económico', 'Total ingresos netos del subsector económico', 'Total Costos y Gastos del subsector económico', 'Total saldo a pagar del subsector económico', 'Total saldo a favor del subsector económico'],
+            [tabla['Código sector económico'], tabla['Nombre sector económico'], tabla['Código Subsector Económico'], tabla['Nombre subsector económico'], tabla['Total de Costos y gastos nómina del subsector económico'], tabla['Total ingresos netos del subsector económico'], tabla['Total Costos y Gastos del subsector económico'], tabla['Total saldo a pagar del subsector económico'], tabla['Total saldo a favor del subsector económico']]    
+        ]
+        print(tabulate(table_data, headers='firstrow', tablefmt='fancy_grid'))
+
+        print('Hay menos de 6 actividades económicas')
+
+             
+    
 
 
 def print_req_5(data,anio):
@@ -134,7 +205,7 @@ def print_req_5(data,anio):
         Función que imprime la solución del Requerimiento 5 en consola
     """
     # TODO: Imprimir el resultado del requerimiento 5
-    print(controller.req_5(data,anio))
+    pass
 
 
 def print_req_6(control):
@@ -175,6 +246,7 @@ if __name__ == "__main__":
         print_menu()
         inputs = input('Seleccione una opción para continuar\n')
         try:
+            
             if int(inputs) == 1:
                 print("Ponga 1 si quiere de Maptype CHAINING")
                 print("Ponga 2 si quiere de Maptype PROBING")
@@ -188,23 +260,6 @@ if __name__ == "__main__":
                 print("Elija 7 si quiere cargar el archivo de tamaño -large")
                 print("Elija 8 si quiere cargar el archivo de tamaño -small")
                 porcentaje = int(input())
-                
-                
-                print("Cargando información de los archivos ....\n")
-                data=load_data(maptype,porcentaje)
-                print("Total de lineas de datos cargadas:  ")
-                
-                x = 3
-                width = [20]
-                #width = width*data    
-                
-                print("Los primeros ", x, "datos cargados son: ")
-                print(data)
-                
-                print("Los últimos ", x, "datos cargados son: ")
-            
-                
-                
                 print("Presione 1 si desea que se ordenen los datos mediante Selection sort")
                 print("Presione 2 si desea que se ordenen los datos mediante Insertion sort")
                 print("Presione 3 si desea que se ordenen los datos mediante Shell sort")
@@ -212,22 +267,46 @@ if __name__ == "__main__":
                 print("Presione 5 si desea que se ordenen los datos mediante Merge sort")
                 tipo_algo=int(input())
                 
+                print("Cargando información de los archivos ....\n")
+                data=load_data(maptype,porcentaje,tipo_algo)
+                print("Total de lineas de datos cargadas:  ")
+                
+                x = 3
+                width = [20]
+                #width = width*data    
+                
+                print("Los primeros ", x, "datos cargados son: ")
+                print()
+                
+                print("Los últimos ", x, "datos cargados son: ")
+            
+                
+                
+               
+                
             elif int(inputs) == 2:
-                (print_req_1(data))
+                anio = input("Año a consultar:")
+                cod = input("Código de sector económico a consultar:")
+                (print_req_1(data, anio, cod))
                 
 
             elif int(inputs) == 3:
-                print('Escriba el año que desea consultar RAA')
-                anio = input()
-                print('Escriba el codigo que desea consultar')
-                cod = input() 
-                print_req_2(data, anio, cod)
+                anio = input("Año a consultar: ")
+                cod = input("Código de sector económico a consultar: ")
+                (print_req_2(data, anio, cod))
+                #print('Escriba el año que desea consultar: ')
+                #anio = input()
+                #print('Escriba el codigo que desea consultar: ')
+                #cod = input() 
+                #print_req_2(data, anio, cod)
+                #print(data)
 
             elif int(inputs) == 4:
                 print_req_3(control)
 
             elif int(inputs) == 5:
-                print_req_4(control)
+                anio = input('Año a consultar: ')
+                print_req_4(data,anio)
 
             elif int(inputs) == 6:
                 print('Escriba el año del que quiere saber el subsector económico que tuvo los mayores  y las tres actividades economicas que menos y mas aportarona este')
@@ -247,6 +326,8 @@ if __name__ == "__main__":
                 working = False
                 print("\nGracias por utilizar el programa")
                 
+            elif int(inputs) == 11:
+                print_data(data, input())                
             else:
                 print("Opción errónea, vuelva a elegir.\n")
         except Exception as exp:
