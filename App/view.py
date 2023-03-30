@@ -95,7 +95,7 @@ def load_data(maptype, porcentaje,sorting_method):
         lista_ordenada=controller.sort(lista_anio,sorting_method)
         primero_y_ultimo=controller.primeros_y_ultimos_Dat(lista_ordenada)
         numero_data=numero_data+lt.size(lista_ordenada)
-        print(str(primero_y_ultimo))
+        #print(str(primero_y_ultimo))                                       ACORDARSE DE QUITAR
         
     return data
         
@@ -142,8 +142,36 @@ def print_req_4(data, anio):
     """
         Función que imprime la solución del Requerimiento 4 en consola
     """
+
     # TODO: Imprimir el resultado del requerimiento 4
-    print(controller.req_4(data, anio))
+    ##print(controller.req_4(data, anio))
+    l_respuesta1 = len(controller.req_4(data, anio))
+    respuesta_1 = controller.req_4(data, anio)
+
+    if l_respuesta1 != 9:
+        tabla = respuesta_1[0]
+
+        table_data = [
+            ['Código sector económico', 'Nombre sector económico', 'Código Subsector Económico', 'Nombre subsector económico', 'Total de Costos y gastos nómina del subsector económico', 'Total ingresos netos del subsector económico', 'Total Costos y Gastos del subsector económico', 'Total saldo a pagar del subsector económico', 'Total saldo a favor del subsector económico'],
+            [tabla['Código sector económico'], tabla['Nombre sector económico'], tabla['Código Subsector Económico'], tabla['Nombre subsector económico'], tabla['Total de Costos y gastos nómina del subsector económico'], tabla['Total ingresos netos del subsector económico'], tabla['Total Costos y Gastos del subsector económico'], tabla['Total saldo a pagar del subsector económico'], tabla['Total saldo a favor del subsector económico']]
+            
+        ]
+        print(tabulate(table_data, headers='firstrow', tablefmt='fancy_grid'))
+
+      
+    else:
+        tabla = respuesta_1
+
+        table_data = [
+            ['Código sector económico', 'Nombre sector económico', 'Código Subsector Económico', 'Nombre subsector económico', 'Total de Costos y gastos nómina del subsector económico', 'Total ingresos netos del subsector económico', 'Total Costos y Gastos del subsector económico', 'Total saldo a pagar del subsector económico', 'Total saldo a favor del subsector económico'],
+            [tabla['Código sector económico'], tabla['Nombre sector económico'], tabla['Código Subsector Económico'], tabla['Nombre subsector económico'], tabla['Total de Costos y gastos nómina del subsector económico'], tabla['Total ingresos netos del subsector económico'], tabla['Total Costos y Gastos del subsector económico'], tabla['Total saldo a pagar del subsector económico'], tabla['Total saldo a favor del subsector económico']]
+            
+        ]
+        print(tabulate(table_data, headers='firstrow', tablefmt='fancy_grid'))
+        print('small')
+
+             
+    
 
 
 def print_req_5(control):

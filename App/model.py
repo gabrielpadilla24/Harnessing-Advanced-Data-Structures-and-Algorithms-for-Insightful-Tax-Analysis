@@ -288,19 +288,37 @@ def req_4(data, anio):
             max_key = key
             max_value = value['value']
     
-    info_subsector = obtener_informacion_subsector(data, anio, max_key)
     top3 = top_actividades_economicas(data, max_key, anio)
-    return {
-        'Código sector económico': info_subsector['Código sector económico'],
-        'Nombre sector económico': info_subsector['Nombre sector económico'],
-        'Código Subsector Económico': max_key,
-        'Nombre subsector económico': info_subsector['Nombre subsector económico'], 
-        'Total de Costos y gastos nómina del subsector económico': max_value,
-        'Total ingresos netos del subsector económico': info_subsector['Total ingresos netos'],
-        'Total Costos y Gastos del subsector económico': info_subsector['Total costos y gastos'],
-        'Total saldo a pagar del subsector económico' : info_subsector['Total saldo a pagar'],
-        'Total saldo a favor del subsector económico': info_subsector['Total saldo a favor']
-    }, top3
+    info_subsector = obtener_informacion_subsector(data, anio, max_key)
+ 
+
+   
+    if len(dictio) != 4 and len(dictio) !=14:
+
+        return {
+            'Código sector económico': info_subsector['Código sector económico'],
+            'Nombre sector económico': info_subsector['Nombre sector económico'],
+            'Código Subsector Económico': max_key,
+            'Nombre subsector económico': info_subsector['Nombre subsector económico'], 
+            'Total de Costos y gastos nómina del subsector económico': max_value,
+            'Total ingresos netos del subsector económico': info_subsector['Total ingresos netos'],
+            'Total Costos y Gastos del subsector económico': info_subsector['Total costos y gastos'],
+            'Total saldo a pagar del subsector económico' : info_subsector['Total saldo a pagar'],
+            'Total saldo a favor del subsector económico': info_subsector['Total saldo a favor']
+        }, obtener_informacion_actividad(data, anio, top3[0][0]),obtener_informacion_actividad(data, anio, top3[0][1]),obtener_informacion_actividad(data, anio, top3[0][2]), obtener_informacion_actividad(data, anio, top3[1][0]), obtener_informacion_actividad(data, anio, top3[1][1]), obtener_informacion_actividad(data, anio, top3[1][2])
+    else:
+        
+        return {
+            'Código sector económico': info_subsector['Código sector económico'],
+            'Nombre sector económico': info_subsector['Nombre sector económico'],
+            'Código Subsector Económico': max_key,
+            'Nombre subsector económico': info_subsector['Nombre subsector económico'], 
+            'Total de Costos y gastos nómina del subsector económico': max_value,
+            'Total ingresos netos del subsector económico': info_subsector['Total ingresos netos'],
+            'Total Costos y Gastos del subsector económico': info_subsector['Total costos y gastos'],
+            'Total saldo a pagar del subsector económico' : info_subsector['Total saldo a pagar'],
+            'Total saldo a favor del subsector económico': info_subsector['Total saldo a favor']
+        }
 
 
 
@@ -313,11 +331,11 @@ def top_actividades_economicas(data, subsector, anio):
     for taxroll in datos_iterables:
         if taxroll['Código subsector económico'] == subsector:
             actividad = taxroll['Código actividad económica']
-            if mp.contains(actividades, actividad):                          #subsector in d_actividades:
+            if mp.contains(actividades, actividad):                          
                 cyg_nomina_act = mp.get(actividades, actividad)
                 v_cyg_actual = cyg_nomina_act['value']          
                 cyg_suma = v_cyg_actual + int(taxroll['Costos y gastos nómina'])    
-                mp.put(actividades, actividad, cyg_suma)                      #d_actividades[subsector].append(actividad)
+                mp.put(actividades, actividad, cyg_suma)                      
             else:
                 mp.put(actividades, actividad, int(taxroll['Costos y gastos nómina']))
 
@@ -332,6 +350,35 @@ def top_actividades_economicas(data, subsector, anio):
     
     return mayores, menores
 
+def obtener_informacion_actividad(data, anio, cod_act_econ):
+    datoanio = get_data(data, anio)
+    datositerables = lt.iterator(me.getValue(datoanio)["Datos"])
+
+    nombre_actividad_economica = None
+    total_costosygastos_nom = 0
+    total_ingresos_netos_ae = 0
+    total_cyg_ae = 0
+    total_saldo_a_pagar_ae = 0
+    total_saldo_favor_ae = 0    
+    for taxroll in datositerables:
+        if taxroll['Código actividad económica'] == cod_act_econ:
+            nombre_actividad_economica = taxroll['Nombre actividad económica']
+            total_costosygastos_nom += int(taxroll['Costos y gastos nómina'])
+            total_ingresos_netos_ae += int(taxroll['Total ingresos netos'])
+            total_cyg_ae += int(taxroll['Total costos y gastos'])
+            total_saldo_a_pagar_ae += int(taxroll['Total saldo a pagar'])
+            total_saldo_favor_ae += int(taxroll['Total saldo a favor'])
+
+    return {
+        'Código Actividad económica':cod_act_econ,
+        'Nombre Actividad Económica': nombre_actividad_economica,
+        'Costos y gastos nómina': total_costosygastos_nom,
+        'El total de ingresos netos': total_ingresos_netos_ae,
+        'El total de costos y gastos': total_cyg_ae,
+        'El total de saldo a pagar': total_saldo_a_pagar_ae,
+        'El total de saldo a favor': total_saldo_favor_ae
+    }
+
 
 
 def obtener_informacion_subsector(data, anio, cod_subsector):
@@ -340,7 +387,6 @@ def obtener_informacion_subsector(data, anio, cod_subsector):
     """
     datoanio = get_data(data, anio)
     datositerables = lt.iterator(me.getValue(datoanio)["Datos"])
-    
     codigo_sector = None
     nombre_sector = None
     nombre_subsector = None
@@ -370,13 +416,13 @@ def obtener_informacion_subsector(data, anio, cod_subsector):
         'Total ingresos netos': total_ingresos_netos,
         'Total saldo a pagar' : total_saldo_por_pagar,
         'Total saldo a favor': total_saldo_favor
-        
+     
     }
 
 
 
 
-def req_55(data_structs):
+def req_5(data_structs):
     """
     Función que soluciona el requerimiento 5
     """
