@@ -162,12 +162,14 @@ def print_req_6(control):
     pass
 
 
-def print_req_7(control):
+def print_req_7(data,anio,cod,n_actividades):
     """
         Función que imprime la solución del Requerimiento 7 en consola
     """
     # TODO: Imprimir el resultado del requerimiento 7
-    pass
+    anio=str(anio)
+    cod=str(cod)
+    print(controller.req_7(data,anio,cod,n_actividades))
 
 
 def print_req_8(control):
@@ -264,7 +266,13 @@ if __name__ == "__main__":
                 print_req_6(control)
 
             elif int(inputs) == 8:
-                print_req_7(control)
+                print('Escriba el numero de actividades económicas a identificar')
+                n_actividades=input()
+                print('Escriba el Año a consultar')
+                anio=input()
+                print('Escriba el Código de subsector económico a identificar')
+                cod=input()
+                print_req_7(data,anio,cod,n_actividades)
 
             elif int(inputs) == 9:
                 print_req_8(control)

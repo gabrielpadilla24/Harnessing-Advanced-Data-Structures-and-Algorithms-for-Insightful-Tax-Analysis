@@ -388,14 +388,35 @@ def req_6(data_structs):
     pass
 
 
-def req_7(data_structs):
+def req_7(data,anio,cod,n_actividades):
     """
     Función que soluciona el requerimiento 7
     """
     # TODO: Realizar el requerimiento 7
+    datoanio = get_data(data, anio)
     
+    valores = lt.newList()
+    
+    datositerables = lt.iterator(me.getValue(datoanio)["Datos"])
+    
+    for taxroll in datositerables:
+        if taxroll["Código subsector económico"] == cod:
+            lt.addLast(valores, taxroll)
+    
+    valores = se.sort(valores, cmpMapCostosyGastos)
+    maxsaldo = lt.firstElement(valores)
+    
+    iterador_val=lt.iterator(valores)
+    keys = lt.newList()
+    for i in iterador_val:
+        
+        lt.addLast(keys,{"Código actividad económica":i['Código actividad económica'],"Nombre actividad económica":i['Nombre actividad económica'],"Código sector económico":i['Código sector económico'],"'Nombre sector económico":i['Nombre sector económico'],"Total ingresos netos":i['Total ingresos netos'], "Total costos y gastos":i['Total costos y gastos'], "Total saldo a pagar":i['Total saldo a pagar'],"Total saldo a favor":i['Total saldo a favor']})
 
+    
+        
+    x=lt.subList(keys,1,int(n_actividades))
 
+    return x
 def req_8(data_structs):
     """
     Función que soluciona el requerimiento 8
@@ -459,7 +480,11 @@ def cmpMapSaldoaFavor(entry_1, entry_2):
         return True
     else:
         return False
-    
+def cmpMapCostosyGastos(entry_1,entry_2):
+    if int(entry_1['Total costos y gastos'])<int(entry_2['Total costos y gastos']):
+        return True
+    else:
+        return False 
 def cmpMapCostosGN(entry_1, entry_2):
     if int(entry_1['Costos y gastos nómina']) > int(entry_2['Costos y gastos nómina']):
         return True
