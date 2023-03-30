@@ -145,12 +145,19 @@ def print_req_4(data, anio):
 
     # TODO: Imprimir el resultado del requerimiento 4
 
-    l_respuesta1 = len(controller.req_4(data, anio))
-    respuesta_1 = controller.req_4(data, anio)
+    respuestas = controller.req_4(data, anio)
+    respuesta_1 = respuestas[0]
+
+    l_respuesta1 = len(respuesta_1)
+
+     # timempo
+    #l_respuesta1 = len(controller.req_4(data, anio))
+    #respuesta_1 = controller.req_4(data, anio)
 
     if l_respuesta1 != 9:
         tabla = respuesta_1[0]
         print('========== Req No. 4 Answer ==========')
+        print(f'El tiempo de ejecución es {respuestas[1]} ms')
         print(f'El subsector económico con mayores costos y gastos de nómina para el año {anio}')
         table_data = [
             ['Código sector económico', 'Nombre sector económico', 'Código Subsector Económico', 'Nombre subsector económico', 'Total de Costos y gastos nómina del subsector económico', 'Total ingresos netos del subsector económico', 'Total Costos y Gastos del subsector económico', 'Total saldo a pagar del subsector económico', 'Total saldo a favor del subsector económico'],
@@ -186,7 +193,9 @@ def print_req_4(data, anio):
     else:
         tabla = respuesta_1
         print('========== Req No. 4 Answer ==========')
+        print(f'El tiempo de ejecución es {respuestas[1]} ms!')
         print(f'El subsector económico con mayores costos y gastos de nómina para el año {anio}')
+
         
         table_data = [
             ['Código sector económico', 'Nombre sector económico', 'Código Subsector Económico', 'Nombre subsector económico', 'Total de Costos y gastos nómina del subsector económico', 'Total ingresos netos del subsector económico', 'Total Costos y Gastos del subsector económico', 'Total saldo a pagar del subsector económico', 'Total saldo a favor del subsector económico'],
@@ -196,7 +205,7 @@ def print_req_4(data, anio):
 
         print('Hay menos de 6 actividades económicas')
 
-             
+           
     
 
 
