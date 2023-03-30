@@ -31,8 +31,11 @@ import os
 El controlador se encarga de mediar entre la vista y el modelo.
 """
 
-
-
+def tracemalloc_start():
+    tracemalloc.start()
+    
+def tracemalloc_end():
+    tracemalloc.stop()
 def new_controller(estructura):
     """
     Crea una instancia del modelo
@@ -180,13 +183,13 @@ def req_6(control):
     pass
 
 
-def req_7(control):
+def req_7(data,anio,cod,n_actividades):
     """
     Retorna el resultado del requerimiento 7
     """
     # TODO: Modificar el requerimiento 7
-    pass
-
+    x=model.req_7(data,anio,cod,n_actividades)
+    return x
 
 def req_8(control):
     """
@@ -235,3 +238,4 @@ def delta_memory(stop_memory, start_memory):
     # de Byte -> kByte
     delta_memory = delta_memory/1024.0
     return delta_memory
+#hola

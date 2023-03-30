@@ -389,9 +389,78 @@ def req_5(data,anio):
     Función que soluciona el requerimiento 5
     """
     # TODO: Realizar el requerimiento 5
+    mapa_anio=mp.get(data,anio)
+    lista_anio = me.getValue(mapa_anio)['Datos']
+    iterable= lt.iterator(lista_anio)
+    #Crear mapa por subsectores
+    mapa =new_data_structs(1)
+    lista_codigos=[]
+    for sector in iterable:
+        if sector['Código subsector económico'] not in lista_codigos:
+            lista_codigos.append(sector['Código subsector económico'])
+        add_data(mapa,sector['Código subsector económico'], sector)
+        
+    mapa_x_subsector=mapa
+    final=subsector_con_mayor_desc(mapa_x_subsector,lista_codigos)
+    cod_subsector=final[1]
+    subsector=final[0]
+    info_subsector=obtener_informacion_subsector(data, anio, cod_subsector)
+    
+    
+    if lt.size(subsector)<6:
+       if lt.size(subsector)>1:
+            lista_ordenada=merg.sort(subsector, cmpDescTrib)
+            Mas_y_menos=lista_ordenada
+       else:
+           Mas_y_menos=subsector
+       
+    else:
+
+        lista_ordenada=merg.sort(subsector, cmpDescTrib)
+        Mas_y_menos= primeros_y_ultimos_Dat(lista_ordenada)
+        
+    return {
+        'Código Subsector Económico': cod_subsector,
+        'Código sector económico': info_subsector['Código sector económico'],
+        'Nombre sector económico': info_subsector['Nombre sector económico'],
+        'Nombre subsector económico': info_subsector['Nombre subsector económico'],
+        'Costos y gastos nómina': info_subsector['Costos y gastos nómina'],
+        'Total Costos y Gastos': info_subsector['Total costos y gastos'],
+        'Total ingresos netos': info_subsector['Total ingresos netos'],
+        'Total saldo a pagar' : info_subsector['Total saldo a pagar'],
+        'Total saldo a favor': info_subsector['Total saldo a favor']
+    },Mas_y_menos
+    
+def cmpDescTrib(dato1,dato2):
+     if int(dato1['Descuentos tributarios'])> int(dato2['Descuentos tributarios']):
+        return True
+     else:
+        return False   
     
 
-
+def subsector_con_mayor_desc(mapa,lista):
+    
+    mayor_impuesto=0
+    mayor_subsector=''
+    codigo_subsector=0
+    for i in lista:
+        mapa_subsector=mp.get(mapa,str(i))
+        lista_anio=me.getValue(mapa_subsector)['Datos']
+        iterable2= lt.iterator(lista_anio)
+        impuesto_total=0
+       
+        for x in iterable2:
+            impuesto_total+=int(x['Descuentos tributarios'])
+        if impuesto_total>mayor_impuesto:
+            mayor_subsector=lista_anio
+            codigo_subsector=str(i)
+    
+    return mayor_subsector,codigo_subsector
+    
+    
+    
+    
+    
 def req_6(data_structs):
     """
     Función que soluciona el requerimiento 6
@@ -400,14 +469,35 @@ def req_6(data_structs):
     pass
 
 
-def req_7(data_structs):
+def req_7(data,anio,cod,n_actividades):
     """
     Función que soluciona el requerimiento 7
     """
     # TODO: Realizar el requerimiento 7
-    pass
+    datoanio = get_data(data, anio)
+    
+    valores = lt.newList()
+    
+    datositerables = lt.iterator(me.getValue(datoanio)["Datos"])
+    
+    for taxroll in datositerables:
+        if taxroll["Código subsector económico"] == cod:
+            lt.addLast(valores, taxroll)
+    
+    valores = se.sort(valores, cmpMapCostosyGastos)
+    maxsaldo = lt.firstElement(valores)
+    
+    iterador_val=lt.iterator(valores)
+    keys = lt.newList()
+    for i in iterador_val:
+        
+        lt.addLast(keys,{"Código actividad económica":i['Código actividad económica'],"Nombre actividad económica":i['Nombre actividad económica'],"Código sector económico":i['Código sector económico'],"'Nombre sector económico":i['Nombre sector económico'],"Total ingresos netos":i['Total ingresos netos'], "Total costos y gastos":i['Total costos y gastos'], "Total saldo a pagar":i['Total saldo a pagar'],"Total saldo a favor":i['Total saldo a favor']})
 
+    
+        
+    x=lt.subList(keys,1,int(n_actividades))
 
+    return x
 def req_8(data_structs):
     """
     Función que soluciona el requerimiento 8
@@ -471,7 +561,11 @@ def cmpMapSaldoaFavor(entry_1, entry_2):
         return True
     else:
         return False
-    
+def cmpMapCostosyGastos(entry_1,entry_2):
+    if int(entry_1['Total costos y gastos'])<int(entry_2['Total costos y gastos']):
+        return True
+    else:
+        return False 
 def cmpMapCostosGN(entry_1, entry_2):
     if int(entry_1['Costos y gastos nómina']) > int(entry_2['Costos y gastos nómina']):
         return True

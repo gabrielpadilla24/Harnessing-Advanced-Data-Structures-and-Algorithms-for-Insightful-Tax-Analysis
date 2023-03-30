@@ -63,10 +63,20 @@ def print_menu():
     print("0- Salir")
 
 
-def load_data(maptype, porcentaje,sorting_method):
+def load_data(maptype, porcentaje,sorting_method,Memoria):
     """
     Carga los datos
     """
+    resp=None
+    if Memoria=='True':
+        Memoria=True
+    elif Memoria == 'False':
+        Memoria==False
+        
+    if Memoria==True:
+        controller.tracemalloc_start()
+        memoria=controller.get_memory()
+        
     nombre_archivo = ""
     if porcentaje==1:
        nombre_archivo = "Salida_agregados_renta_juridicos_AG-5pct.csv"
@@ -95,9 +105,15 @@ def load_data(maptype, porcentaje,sorting_method):
         lista_ordenada=controller.sort(lista_anio,sorting_method)
         primero_y_ultimo=controller.primeros_y_ultimos_Dat(lista_ordenada)
         numero_data=numero_data+lt.size(lista_ordenada)
-        print(str(primero_y_ultimo))                              
+        print(str(primero_y_ultimo))
+    if Memoria==True:
+        memoria2=controller.get_memory() 
+        controller.tracemalloc_end()
+        memoria_total=controller.delta_memory(memoria,memoria2)
+        memoria_total=round(memoria_total,2)
+        resp=('La memoria total es:'+str(memoria_total)+' KB')
         
-    return data
+    return data,resp
         
     
 
@@ -214,7 +230,7 @@ def print_req_5(data,anio):
         Función que imprime la solución del Requerimiento 5 en consola
     """
     # TODO: Imprimir el resultado del requerimiento 5
-    pass
+    print(controller.req_5(data,anio))
 
 
 def print_req_6(control):
@@ -225,12 +241,14 @@ def print_req_6(control):
     pass
 
 
-def print_req_7(control):
+def print_req_7(data,anio,cod,n_actividades):
     """
         Función que imprime la solución del Requerimiento 7 en consola
     """
     # TODO: Imprimir el resultado del requerimiento 7
-    pass
+    anio=str(anio)
+    cod=str(cod)
+    print(controller.req_7(data,anio,cod,n_actividades))
 
 
 def print_req_8(control):
@@ -275,9 +293,14 @@ if __name__ == "__main__":
                 print("Presione 4 si desea que se ordenen los datos mediante Quick sort")
                 print("Presione 5 si desea que se ordenen los datos mediante Merge sort")
                 tipo_algo=int(input())
-                
+                print('Escriba True si quiere saber la memoria o False si no quiere saberla')
+                memoria=input()
                 print("Cargando información de los archivos ....\n")
-                data=load_data(maptype,porcentaje,tipo_algo)
+                resp=load_data(maptype,porcentaje,tipo_algo,memoria)
+                data=resp[0]
+                print(data)
+                if resp[1]!=None:
+                    print(resp[1])
                 print("Total de lineas de datos cargadas:  ")
                 
                 x = 3
@@ -318,15 +341,22 @@ if __name__ == "__main__":
                 print_req_4(data,anio)
 
             elif int(inputs) == 6:
-                print('Escriba el año del que quiere saber el subsector económico que tuvo los mayores  y las tres actividades economicas que menos y mas aportarona este')
+                print('Escriba el año del que quiere saber el subsector económico que tuvo los mayores descuentos tributarios y las tres actividades economicas que menos y mas aportarona este')
                 anio=int(input())
+                anio=str(anio)
                 print_req_5(data,anio)
 
             elif int(inputs) == 7:
                 print_req_6(control)
 
             elif int(inputs) == 8:
-                print_req_7(control)
+                print('Escriba el numero de actividades económicas a identificar')
+                n_actividades=input()
+                print('Escriba el Año a consultar')
+                anio=input()
+                print('Escriba el Código de subsector económico a identificar')
+                cod=input()
+                print_req_7(data,anio,cod,n_actividades)
 
             elif int(inputs) == 9:
                 print_req_8(control)
