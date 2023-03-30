@@ -258,27 +258,6 @@ def req_4(data, anio):
         'Total saldo a favor': info_subsector['Total saldo a favor']
     }
 
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -342,29 +321,56 @@ def req_5(data,anio):
         
     mapa_x_subsector=mapa
     final=subsector_con_mayor_desc(mapa_x_subsector,lista_codigos)
-    print(lista_codigos)
+    cod_subsector=final[1]
+    subsector=final[0]
+    info_subsector=obtener_informacion_subsector(data, anio, cod_subsector)
+    if lt.size(subsector)<6:
+        lista=[]
+        Mas_y_menos=subsector
+    else:
+        lista_ordenada=merg.sort(subsector, cmpDescTrib)
+        Mas_y_menos= primeros_y_ultimos_Dat(lista_ordenada)
         
-        
+    print(subsector)
+    print()
+    print()
+    return {
+        'Código Subsector Económico': cod_subsector,
+        'Código sector económico': info_subsector['Código sector económico'],
+        'Nombre sector económico': info_subsector['Nombre sector económico'],
+        'Nombre subsector económico': info_subsector['Nombre subsector económico'],
+        'Costos y gastos nómina': info_subsector['Costos y gastos nómina'],
+        'Total Costos y Gastos': info_subsector['Total costos y gastos'],
+        'Total ingresos netos': info_subsector['Total ingresos netos'],
+        'Total saldo a pagar' : info_subsector['Total saldo a pagar'],
+        'Total saldo a favor': info_subsector['Total saldo a favor']
+    }   
     
+def cmpDescTrib(dato1,dato2):
+     if int(dato1['Descuentos tributarios'])> int(dato2['Descuentos tributarios']):
+        return True
+     else:
+        return False   
     
-    
-    return None
 
 def subsector_con_mayor_desc(mapa,lista):
     
     mayor_impuesto=0
     mayor_subsector=''
+    codigo_subsector=0
     for i in lista:
         mapa_subsector=mp.get(mapa,str(i))
         lista_anio=me.getValue(mapa_subsector)['Datos']
         iterable2= lt.iterator(lista_anio)
         impuesto_total=0
-        
+       
         for x in iterable2:
             impuesto_total+=int(x['Descuentos tributarios'])
         if impuesto_total>mayor_impuesto:
             mayor_subsector=lista_anio
-    print(mayor_subsector)
+            codigo_subsector=str(i)
+    
+    return mayor_subsector,codigo_subsector
     
     
     
