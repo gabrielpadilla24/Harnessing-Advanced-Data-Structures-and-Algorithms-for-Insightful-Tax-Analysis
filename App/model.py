@@ -222,44 +222,6 @@ def req_3(data_structs):
     # TODO: Realizar el requerimiento 3
     pass
 
-'''
-
-def req_4(data, anio):  
-    datoanio = get_data(data, anio)
-    
-    subsectores = {}
-    #subsectores = mp.newMap(numelements=500, maptype='CHAINING')
-
-
-    datositerables = lt.iterator(me.getValue(datoanio)["Datos"])
-
-    for taxroll in datositerables:
-        subsector = taxroll["Código subsector económico"]
-        if subsector in subsectores:
-            subsectores[subsector] += int(taxroll["Costos y gastos nómina"])
-        else:
-            subsectores[subsector] = int(taxroll["Costos y gastos nómina"])
-            
-    sorted_subsectores = sorted(subsectores.items(), key=lambda x: x[1], reverse=True)
-    max_subsector = sorted_subsectores[0][0]
-
-    info_subsector = obtener_informacion_subsector(data, anio, max_subsector)
-
-    
-    return {
-        'Código Subsector Económico': max_subsector,
-        'Código sector económico': info_subsector['Código sector económico'],
-        'Nombre sector económico': info_subsector['Nombre sector económico'],
-        'Nombre subsector económico': info_subsector['Nombre subsector económico'],
-        'Costos y gastos nómina': sorted_subsectores[0][1],
-        'Total Costos y Gastos': info_subsector['Total costos y gastos'],
-        'Total ingresos netos': info_subsector['Total ingresos netos'],
-        'Total saldo a pagar' : info_subsector['Total saldo a pagar'],
-        'Total saldo a favor': info_subsector['Total saldo a favor']
-    }
-
-  '''
-
 
 def req_4(data, anio):  
     datoanio = get_data(data, anio)
@@ -292,8 +254,6 @@ def req_4(data, anio):
     info_subsector = obtener_informacion_subsector(data, anio, max_key)
  
 
-   
-    #if len(dictio) != 4 and len(dictio) !=14:
     try:
 
         return {
@@ -307,7 +267,6 @@ def req_4(data, anio):
             'Total saldo a pagar del subsector económico' : info_subsector['Total saldo a pagar'],
             'Total saldo a favor del subsector económico': info_subsector['Total saldo a favor']
         }, obtener_informacion_actividad(data, anio, top3[0][0]),obtener_informacion_actividad(data, anio, top3[0][1]),obtener_informacion_actividad(data, anio, top3[0][2]), obtener_informacion_actividad(data, anio, top3[1][0]), obtener_informacion_actividad(data, anio, top3[1][1]), obtener_informacion_actividad(data, anio, top3[1][2])
-    #else:
 
     except:
         

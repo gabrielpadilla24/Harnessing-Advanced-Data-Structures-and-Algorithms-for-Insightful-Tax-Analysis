@@ -95,7 +95,7 @@ def load_data(maptype, porcentaje,sorting_method):
         lista_ordenada=controller.sort(lista_anio,sorting_method)
         primero_y_ultimo=controller.primeros_y_ultimos_Dat(lista_ordenada)
         numero_data=numero_data+lt.size(lista_ordenada)
-        #print(str(primero_y_ultimo))                                       ACORDARSE DE QUITAR
+        print(str(primero_y_ultimo))                              
         
     return data
         
@@ -144,7 +144,7 @@ def print_req_4(data, anio):
     """
 
     # TODO: Imprimir el resultado del requerimiento 4
-    ##print(controller.req_4(data, anio))
+
     l_respuesta1 = len(controller.req_4(data, anio))
     respuesta_1 = controller.req_4(data, anio)
 
