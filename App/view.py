@@ -63,10 +63,20 @@ def print_menu():
     print("0- Salir")
 
 
-def load_data(maptype, porcentaje,sorting_method):
+def load_data(maptype, porcentaje,sorting_method,Memoria):
     """
     Carga los datos
     """
+    resp=None
+    if Memoria=='True':
+        Memoria=True
+    elif Memoria == 'False':
+        Memoria==False
+        
+    if Memoria==True:
+        controller.tracemalloc_start()
+        memoria=controller.get_memory()
+        
     nombre_archivo = ""
     if porcentaje==1:
        nombre_archivo = "Salida_agregados_renta_juridicos_AG-5pct.csv"
@@ -96,8 +106,14 @@ def load_data(maptype, porcentaje,sorting_method):
         primero_y_ultimo=controller.primeros_y_ultimos_Dat(lista_ordenada)
         numero_data=numero_data+lt.size(lista_ordenada)
         print(str(primero_y_ultimo))
+    if Memoria==True:
+        memoria2=controller.get_memory() 
+        controller.tracemalloc_end()
+        memoria_total=controller.delta_memory(memoria,memoria2)
+        memoria_total=round(memoria_total,2)
+        resp=('La memoria total es:'+str(memoria_total)+' KB')
         
-    return data
+    return data,resp
         
     
 
@@ -214,9 +230,14 @@ if __name__ == "__main__":
                 print("Presione 4 si desea que se ordenen los datos mediante Quick sort")
                 print("Presione 5 si desea que se ordenen los datos mediante Merge sort")
                 tipo_algo=int(input())
-                
+                print('Escriba True si quiere saber la memoria o False si no quiere saberla')
+                memoria=input()
                 print("Cargando información de los archivos ....\n")
-                data=load_data(maptype,porcentaje,tipo_algo)
+                resp=load_data(maptype,porcentaje,tipo_algo,memoria)
+                data=resp[0]
+                print(data)
+                if resp[1]!=None:
+                    print(resp[1])
                 print("Total de lineas de datos cargadas:  ")
                 
                 x = 3

@@ -31,8 +31,11 @@ import os
 El controlador se encarga de mediar entre la vista y el modelo.
 """
 
-
-
+def tracemalloc_start():
+    tracemalloc.start()
+    
+def tracemalloc_end():
+    tracemalloc.stop()
 def new_controller(estructura):
     """
     Crea una instancia del modelo
@@ -229,3 +232,4 @@ def delta_memory(stop_memory, start_memory):
     # de Byte -> kByte
     delta_memory = delta_memory/1024.0
     return delta_memory
+#hola
