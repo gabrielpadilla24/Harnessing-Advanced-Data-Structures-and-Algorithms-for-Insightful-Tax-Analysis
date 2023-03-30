@@ -289,6 +289,7 @@ def req_4(data, anio):
             max_value = value['value']
     
     info_subsector = obtener_informacion_subsector(data, anio, max_key)
+    top3 = top_actividades_economicas(data, max_key, anio)
     return {
         'Código sector económico': info_subsector['Código sector económico'],
         'Nombre sector económico': info_subsector['Nombre sector económico'],
@@ -299,30 +300,37 @@ def req_4(data, anio):
         'Total Costos y Gastos del subsector económico': info_subsector['Total costos y gastos'],
         'Total saldo a pagar del subsector económico' : info_subsector['Total saldo a pagar'],
         'Total saldo a favor del subsector económico': info_subsector['Total saldo a favor']
-    }
+    }, top3
 
 
 
+def top_actividades_economicas(data, subsector, anio):
+    dato_anio = get_data(data, anio)
+    actividades = mp.newMap(numelements=100, maptype='CHAINING')
+    datos_iterables = lt.iterator(me.getValue(dato_anio)["Datos"])
+    d_actividades = {}
 
+    for taxroll in datos_iterables:
+        if taxroll['Código subsector económico'] == subsector:
+            actividad = taxroll['Código actividad económica']
+            if mp.contains(actividades, actividad):                          #subsector in d_actividades:
+                cyg_nomina_act = mp.get(actividades, actividad)
+                v_cyg_actual = cyg_nomina_act['value']          
+                cyg_suma = v_cyg_actual + int(taxroll['Costos y gastos nómina'])    
+                mp.put(actividades, actividad, cyg_suma)                      #d_actividades[subsector].append(actividad)
+            else:
+                mp.put(actividades, actividad, int(taxroll['Costos y gastos nómina']))
 
+            d_actividades[actividad] = mp.get(actividades, actividad)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    lista_tuplas = [(k, v['value']) for k, v in d_actividades.items()]
+    
+    lista_tuplas_ordenada = sorted(lista_tuplas, key=lambda x: x[1])
+    
+    mayores = [k for k, v in lista_tuplas_ordenada[-3:]]
+    menores = [k for k, v in lista_tuplas_ordenada[:3]]
+    
+    return mayores, menores
 
 
 
