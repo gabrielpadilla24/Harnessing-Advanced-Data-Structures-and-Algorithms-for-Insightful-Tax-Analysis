@@ -150,25 +150,51 @@ def print_req_4(data, anio):
 
     if l_respuesta1 != 9:
         tabla = respuesta_1[0]
-
+        print('========== Req No. 4 Answer ==========')
+        print(f'El subsector económico con mayores costos y gastos de nómina para el año {anio}')
         table_data = [
             ['Código sector económico', 'Nombre sector económico', 'Código Subsector Económico', 'Nombre subsector económico', 'Total de Costos y gastos nómina del subsector económico', 'Total ingresos netos del subsector económico', 'Total Costos y Gastos del subsector económico', 'Total saldo a pagar del subsector económico', 'Total saldo a favor del subsector económico'],
-            [tabla['Código sector económico'], tabla['Nombre sector económico'], tabla['Código Subsector Económico'], tabla['Nombre subsector económico'], tabla['Total de Costos y gastos nómina del subsector económico'], tabla['Total ingresos netos del subsector económico'], tabla['Total Costos y Gastos del subsector económico'], tabla['Total saldo a pagar del subsector económico'], tabla['Total saldo a favor del subsector económico']]
-            
+            [tabla['Código sector económico'], tabla['Nombre sector económico'], tabla['Código Subsector Económico'], tabla['Nombre subsector económico'], tabla['Total de Costos y gastos nómina del subsector económico'], tabla['Total ingresos netos del subsector económico'], tabla['Total Costos y Gastos del subsector económico'], tabla['Total saldo a pagar del subsector económico'], tabla['Total saldo a favor del subsector económico']]   
         ]
         print(tabulate(table_data, headers='firstrow', tablefmt='fancy_grid'))
 
+        top1, top2, top3, peor1, peor2, peor3 = respuesta_1[3], respuesta_1[2], respuesta_1[1], respuesta_1[4], respuesta_1[5], respuesta_1[6]
+
+        print('')
+        print('Las 3 actividades económicas que más aportaron al valor total de costos y gastos de nómina del subsector son: ')
+        print('')
+        tabla1 = [
+            ['Código Actividad económica', 'Nombre Actividad Económica', 'Costos y gastos nómina', 'El total de ingresos netos', 'El total de costos y gastos', 'El total de saldo a pagar','El total de saldo a favor'],
+            [top1['Código Actividad económica'],top1['Nombre Actividad Económica'],top1['Costos y gastos nómina'],top1['El total de ingresos netos'],top1['El total de costos y gastos'],top1['El total de saldo a pagar'],top1['El total de saldo a favor']],
+            [top2['Código Actividad económica'],top2['Nombre Actividad Económica'],top2['Costos y gastos nómina'],top2['El total de ingresos netos'],top2['El total de costos y gastos'],top2['El total de saldo a pagar'],top2['El total de saldo a favor']],
+            [top3['Código Actividad económica'],top3['Nombre Actividad Económica'],top3['Costos y gastos nómina'],top3['El total de ingresos netos'],top3['El total de costos y gastos'],top3['El total de saldo a pagar'],top3['El total de saldo a favor']]
+        ]
+        print(tabulate(tabla1, headers='firstrow', tablefmt='fancy_grid'))
+
+        print('')
+        print('Las 3 actividades económicas que menos aportaron al valor total de costos y gastos de nómina del subsector son: ')
+        print('')
+        tabla2 = [
+            ['Código Actividad económica', 'Nombre Actividad Económica', 'Costos y gastos nómina', 'El total de ingresos netos', 'El total de costos y gastos', 'El total de saldo a pagar','El total de saldo a favor'],
+            [peor1['Código Actividad económica'],peor1['Nombre Actividad Económica'],peor1['Costos y gastos nómina'],peor1['El total de ingresos netos'],peor1['El total de costos y gastos'],peor1['El total de saldo a pagar'],peor1['El total de saldo a favor']],
+            [peor2['Código Actividad económica'],peor2['Nombre Actividad Económica'],peor2['Costos y gastos nómina'],peor2['El total de ingresos netos'],peor2['El total de costos y gastos'],peor2['El total de saldo a pagar'],peor2['El total de saldo a favor']],
+            [peor3['Código Actividad económica'],peor3['Nombre Actividad Económica'],peor3['Costos y gastos nómina'],peor3['El total de ingresos netos'],peor3['El total de costos y gastos'],peor3['El total de saldo a pagar'],peor3['El total de saldo a favor']]
+        ]
+
+        print(tabulate(tabla2, headers='firstrow', tablefmt='fancy_grid'))  
       
     else:
         tabla = respuesta_1
-
+        print('========== Req No. 4 Answer ==========')
+        print(f'El subsector económico con mayores costos y gastos de nómina para el año {anio}')
+        
         table_data = [
             ['Código sector económico', 'Nombre sector económico', 'Código Subsector Económico', 'Nombre subsector económico', 'Total de Costos y gastos nómina del subsector económico', 'Total ingresos netos del subsector económico', 'Total Costos y Gastos del subsector económico', 'Total saldo a pagar del subsector económico', 'Total saldo a favor del subsector económico'],
-            [tabla['Código sector económico'], tabla['Nombre sector económico'], tabla['Código Subsector Económico'], tabla['Nombre subsector económico'], tabla['Total de Costos y gastos nómina del subsector económico'], tabla['Total ingresos netos del subsector económico'], tabla['Total Costos y Gastos del subsector económico'], tabla['Total saldo a pagar del subsector económico'], tabla['Total saldo a favor del subsector económico']]
-            
+            [tabla['Código sector económico'], tabla['Nombre sector económico'], tabla['Código Subsector Económico'], tabla['Nombre subsector económico'], tabla['Total de Costos y gastos nómina del subsector económico'], tabla['Total ingresos netos del subsector económico'], tabla['Total Costos y Gastos del subsector económico'], tabla['Total saldo a pagar del subsector económico'], tabla['Total saldo a favor del subsector económico']]    
         ]
         print(tabulate(table_data, headers='firstrow', tablefmt='fancy_grid'))
-        print('small')
+
+        print('Hay menos de 6 actividades económicas')
 
              
     

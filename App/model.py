@@ -293,7 +293,8 @@ def req_4(data, anio):
  
 
    
-    if len(dictio) != 4 and len(dictio) !=14:
+    #if len(dictio) != 4 and len(dictio) !=14:
+    try:
 
         return {
             'Código sector económico': info_subsector['Código sector económico'],
@@ -306,7 +307,9 @@ def req_4(data, anio):
             'Total saldo a pagar del subsector económico' : info_subsector['Total saldo a pagar'],
             'Total saldo a favor del subsector económico': info_subsector['Total saldo a favor']
         }, obtener_informacion_actividad(data, anio, top3[0][0]),obtener_informacion_actividad(data, anio, top3[0][1]),obtener_informacion_actividad(data, anio, top3[0][2]), obtener_informacion_actividad(data, anio, top3[1][0]), obtener_informacion_actividad(data, anio, top3[1][1]), obtener_informacion_actividad(data, anio, top3[1][2])
-    else:
+    #else:
+
+    except:
         
         return {
             'Código sector económico': info_subsector['Código sector económico'],
