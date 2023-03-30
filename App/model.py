@@ -324,16 +324,20 @@ def req_5(data,anio):
     cod_subsector=final[1]
     subsector=final[0]
     info_subsector=obtener_informacion_subsector(data, anio, cod_subsector)
+    
+    
     if lt.size(subsector)<6:
-        lista=[]
-        Mas_y_menos=subsector
+       if lt.size(subsector)>1:
+            lista_ordenada=merg.sort(subsector, cmpDescTrib)
+            Mas_y_menos=lista_ordenada
+       else:
+           Mas_y_menos=subsector
+       
     else:
+
         lista_ordenada=merg.sort(subsector, cmpDescTrib)
         Mas_y_menos= primeros_y_ultimos_Dat(lista_ordenada)
         
-    print(subsector)
-    print()
-    print()
     return {
         'Código Subsector Económico': cod_subsector,
         'Código sector económico': info_subsector['Código sector económico'],
@@ -344,7 +348,7 @@ def req_5(data,anio):
         'Total ingresos netos': info_subsector['Total ingresos netos'],
         'Total saldo a pagar' : info_subsector['Total saldo a pagar'],
         'Total saldo a favor': info_subsector['Total saldo a favor']
-    }   
+    },Mas_y_menos
     
 def cmpDescTrib(dato1,dato2):
      if int(dato1['Descuentos tributarios'])> int(dato2['Descuentos tributarios']):
@@ -389,7 +393,7 @@ def req_7(data_structs):
     Función que soluciona el requerimiento 7
     """
     # TODO: Realizar el requerimiento 7
-    pass
+    
 
 
 def req_8(data_structs):
