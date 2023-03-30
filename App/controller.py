@@ -155,7 +155,13 @@ def req_4(data, anio):
     Retorna el resultado del requerimiento 4
     """
     # TODO: Modificar el requerimiento 4
-    return model.req_4(data, anio)
+    start = get_time()
+    returnable =  model.req_4(data, anio)
+    stop = get_time()
+    tiempo = delta_time(start, stop)
+    return returnable, tiempo
+    
+
 
 
 def req_5(control):
