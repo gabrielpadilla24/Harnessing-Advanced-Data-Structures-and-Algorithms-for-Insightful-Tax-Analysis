@@ -302,6 +302,8 @@ if __name__ == "__main__":
                 print("Cargando información de los archivos ....\n")
                 resp=load_data(maptype,porcentaje,tipo_algo,memoria)
                 data=resp[0]
+                print("Los primeros y ultimos 3 datos cargados por año son: ")
+                print()
                 for anio in resp[2]:
                     for elem in lt.iterator(anio):
                         print("dato")
@@ -311,18 +313,7 @@ if __name__ == "__main__":
                     print(resp[1])
                 print("Total de lineas de datos cargadas:  ")
                 
-                x = 3
-                width = [20]
-                #width = width*data    
-                
-                print("Los primeros ", x, "datos cargados son: ")
-                print()
-                
-                print("Los últimos ", x, "datos cargados son: ")
-            
-                
-                
-               
+        
                 
             elif int(inputs) == 2:
                 anio = input("Año a consultar:")
