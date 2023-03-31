@@ -172,8 +172,15 @@ def req_5(data,anio):
     Retorna el resultado del requerimiento 5
     """
     # TODO: Modificar el requerimiento 5
+    start_memory = get_memory()
+    start = get_time()
     x=model.req_5(data,anio)
-    return x
+    stop = get_time()
+    stop_memory = get_memory()
+    memory = delta_memory(stop_memory, start_memory)
+    time = delta_time(start, stop)
+    x=model.req_5(data,anio)
+    return x,time,memory
 
 def req_6(control):
     """

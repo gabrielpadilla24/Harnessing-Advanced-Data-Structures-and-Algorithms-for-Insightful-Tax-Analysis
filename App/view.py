@@ -234,7 +234,9 @@ def print_req_5(data,anio):
         Función que imprime la solución del Requerimiento 5 en consola
     """
     # TODO: Imprimir el resultado del requerimiento 5
-    print(controller.req_5(data,anio))
+    x=controller.req_5(data,anio)
+    print(tabulate(x[0], headers="keys",tablefmt="simple_grid", maxheadercolwidths=20, maxcolwidths=20))
+    return None
 
 
 def print_req_6(control):
@@ -343,7 +345,9 @@ if __name__ == "__main__":
                 print('Escriba el año del que quiere saber el subsector económico que tuvo los mayores descuentos tributarios y las tres actividades economicas que menos y mas aportarona este')
                 anio=int(input())
                 anio=str(anio)
-                print_req_5(data,anio)
+                x=print_req_5(data,anio)
+                print(x[0])
+                print('El tiempo que de carga fue:'+str(x[1]))
 
             elif int(inputs) == 7:
                 print_req_6(control)
