@@ -235,8 +235,8 @@ def print_req_5(data,anio):
     """
     # TODO: Imprimir el resultado del requerimiento 5
     x=controller.req_5(data,anio)
-    print(tabulate(x[0], headers="keys",tablefmt="simple_grid", maxheadercolwidths=20, maxcolwidths=20))
-    return None
+   
+    return x
 
 
 def print_req_6(control):
@@ -346,7 +346,11 @@ if __name__ == "__main__":
                 anio=int(input())
                 anio=str(anio)
                 x=print_req_5(data,anio)
-                print(x[0])
+                print('El subsector con mayores mayores descuentostributarios')
+                print(x[0][0])
+                print()
+                print('Las tres actividades económicas que menos aportaron y las tres actividades económicas que más aportaron al valor total de Descuentos tributarios del subsector son')
+                print(x[0][1])
                 print('El tiempo que de carga fue:'+str(x[1]))
 
             elif int(inputs) == 7:
